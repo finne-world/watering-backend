@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/watering_backend_development
+    username: watering_development_user
+    password: ${DATABASE_PASSWORD}

@@ -5,6 +5,7 @@ plugins {
 	boot
 	dependencyManagement
 	spring
+	flyway
 }
 
 group = "com.watering"
@@ -18,14 +19,20 @@ repositories {
 dependencies {
 	implementation(springBootStarterThymeleaf)
 	implementation(springBootStarterWeb)
+	implementation(springBootStarterJdbc)
 	implementation(jacksonModuleKotlin)
 	implementation(kotlinReflect)
 	implementation(kotlinStdlibJdk8)
 	developmentOnly(springBootDevtools)
 	runtimeOnly(mysqlConnectorJava)
 	testImplementation(springBootStarterTest)
+	implementation(springBootStarterValidation)
 	implementation(okHttp3)
 	implementation(arrowCore)
+	implementation(exposedCore)
+	implementation(exposedDao)
+	implementation(exposedJdbc)
+	implementation(exposedJavaTime)
 }
 
 tasks.withType<KotlinCompile> {
@@ -41,4 +48,10 @@ tasks.withType<Test> {
 
 tasks.wrapper {
 	gradleVersion = GRADLE_VERSION
+}
+
+flyway {
+	url = System.getenv("WATERING_FLYWAY_URL")
+	user = System.getenv("WATERING_FLYWAY_USER")
+	password = System.getenv("WATERING_FLYWAY_PASSWORD")
 }
