@@ -1,9 +1,9 @@
 package com.watering.watering_backend.application.controller
 
-import com.watering.watering_backend.application.constant.Error
-import com.watering.watering_backend.application.exception.ApplicationException
-import com.watering.watering_backend.application.exception.DeviceNotFoundException
-import com.watering.watering_backend.application.exception.InsertFailedException
+import com.watering.watering_backend.domain.constant.Error
+import com.watering.watering_backend.domain.exception.ApplicationException
+import com.watering.watering_backend.domain.exception.ResourceNotFoundException
+import com.watering.watering_backend.domain.exception.InsertFailedException
 import com.watering.watering_backend.application.json.response.ErrorResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -32,8 +32,8 @@ class ControllerExceptionHandler: ResponseEntityExceptionHandler() {
         )
     }
 
-    @ExceptionHandler(DeviceNotFoundException::class)
-    fun handleDeviceNotFoundException(exception: DeviceNotFoundException, request: WebRequest): ResponseEntity<Any> {
+    @ExceptionHandler(ResourceNotFoundException::class)
+    fun handleDeviceNotFoundException(exception: ResourceNotFoundException, request: WebRequest): ResponseEntity<Any> {
         return handleApplicationException(exception, request)
     }
 

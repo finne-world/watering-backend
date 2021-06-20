@@ -16,12 +16,22 @@ CREATE TABLE member_device_maps (
 );
 
 CREATE TABLE watering_settings (
-    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    device_id     BINARY(16) UNIQUE NOT NULL,
-    auto_watering BOOL NOT NULL,
-    `interval`    INT,
-    created_at    DATETIME NOT NULL,
-    updated_at    DATETIME NOT NULL,
+    id           BIGINT AUTO_INCREMENT PRIMARY KEY,
+    device_id    BINARY(16) UNIQUE NOT NULL,
+    water_amount INT,
+    created_at   DATETIME NOT NULL,
+    updated_at   DATETIME NOT NULL,
+
+    FOREIGN KEY (device_id) REFERENCES devices (id)
+);
+
+CREATE TABLE auto_watering_settings (
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    device_id  BINARY(16) UNIQUE NOT NULL,
+    enabled    BOOL NOT NULL,
+    `interval` INT,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
 
     FOREIGN KEY (device_id) REFERENCES devices (id)
 );
