@@ -12,4 +12,6 @@ interface DeviceRepository {
     fun getById(id: UUID): Option<DeviceEntity>
 
     fun getDevicesByMemberId(memberId: Long): List<DeviceEntity>
+
+    fun getCurrentDevice(memberId: Long): Option<DeviceEntity>
 }

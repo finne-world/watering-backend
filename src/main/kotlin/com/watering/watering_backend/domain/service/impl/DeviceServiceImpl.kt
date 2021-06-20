@@ -1,15 +1,17 @@
 package com.watering.watering_backend.domain.service.impl
 
+import arrow.core.getOrElse
 import com.watering.watering_backend.domain.entity.AutoWateringSettingEntity
 import com.watering.watering_backend.domain.entity.DeviceEntity
 import com.watering.watering_backend.domain.entity.WateringSettingEntity
 import com.watering.watering_backend.domain.exception.DeviceAlreadyExistsException
-import com.watering.watering_backend.domain.exception.InsertFailedException
+import com.watering.watering_backend.domain.exception.ResourceNotFoundException
 import com.watering.watering_backend.domain.repository.AutoWateringSettingRepository
 import com.watering.watering_backend.domain.repository.DeviceRepository
 import com.watering.watering_backend.domain.repository.MemberDeviceMapRepository
 import com.watering.watering_backend.domain.repository.WateringSettingRepository
 import com.watering.watering_backend.domain.service.DeviceService
+import com.watering.watering_backend.domain.service.dto.device.GetCurrentDeviceResult
 import com.watering.watering_backend.domain.service.dto.device.RegisterDeviceResult
 import com.watering.watering_backend.lib.extension.getOrThrow
 import com.watering.watering_backend.lib.extension.runIfTrue
@@ -40,6 +42,14 @@ class DeviceServiceImpl(
             createdDevice = createdDevice,
             createdWateringSetting = createdWateringSetting,
             createdAutoWateringSetting = createdAutoWateringSetting
+        )
+    }
+
+    override fun getCurrentDevice(memberId: Long): GetCurrentDeviceResult = transaction {
+        val currentDevice: DeviceEntity = deviceRepository.getCurrentDevice(memberId).getOrElse { throw ResourceNotFoundException("current device not found. member_id=${memberId}.") }
+
+        GetCurrentDeviceResult(
+            device = currentDevice
         )
     }
 }
