@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 object DeviceTable: Table("devices") {
     val id = uuid("id")
     val name = varchar("name", 255)
+    val current = bool("current").default(false)
     val createdAt = datetime("created_at").default(LocalDateTime.now())
     val updatedAt = datetime("updated_at").default(LocalDateTime.now())
 
@@ -18,6 +19,7 @@ object DeviceTable: Table("devices") {
         return DeviceEntity(
             resultRow[id],
             resultRow[name],
+            resultRow[current],
             resultRow[createdAt],
             resultRow[updatedAt]
         )

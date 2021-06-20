@@ -40,4 +40,15 @@ class DeviceRepositoryImpl(
         }
         .map(DeviceTable::toEntity)
     }
+
+    override fun getCurrentDevice(memberId: Long): Option<DeviceEntity> {
+        val currentDevices: List<DeviceEntity> = this.getDevicesByMemberId(memberId).filter { it.current }
+
+        // TODO: 業務ロジック？ Service クラスで処理するべき？
+        if (currentDevices.size > 1) {
+            throw IllegalStateException("multiple current devices. member_id=${memberId}.")
+        }
+
+        return currentDevices.firstOrNone()
+    }
 }
