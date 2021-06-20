@@ -1,6 +1,6 @@
 package com.watering.watering_backend.application.controller.api
 
-import com.watering.watering_backend.application.json.parameter.DevicesAddParameter
+import com.watering.watering_backend.application.json.parameter.device.RegisterDeviceParameter
 import com.watering.watering_backend.application.json.parameter.device.GetCurrentDeviceParameter
 import com.watering.watering_backend.application.json.response.DevicesAddResponse
 import com.watering.watering_backend.application.json.response.`object`.AutoWateringSetting
@@ -25,13 +25,13 @@ class DeviceController(
     private val deviceService: DeviceService
 ) {
     @PostMapping
-    fun register(@ModelAttribute devicesAddParameter: DevicesAddParameter): DevicesAddResponse {
+    fun register(@ModelAttribute registerDeviceParameter: RegisterDeviceParameter): DevicesAddResponse {
         val (createdDevice: DeviceEntity,
              createdWateringSetting: WateringSettingEntity,
              createdAutoWateringSetting: AutoWateringSettingEntity
         ) = this.deviceService.registerDevice(
-            devicesAddParameter.memberId,
-            devicesAddParameter.deviceName
+            registerDeviceParameter.memberId,
+            registerDeviceParameter.deviceName
         )
 
         return DevicesAddResponse(

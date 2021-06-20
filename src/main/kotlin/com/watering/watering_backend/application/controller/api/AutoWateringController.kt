@@ -1,6 +1,6 @@
 package com.watering.watering_backend.application.controller.api
 
-import com.watering.watering_backend.application.json.parameter.AutoWateringEnabledParameter
+import com.watering.watering_backend.application.json.parameter.auto_watering.ChangeEnabledParameter
 import com.watering.watering_backend.application.json.response.AutoWateringResponse
 import com.watering.watering_backend.application.json.response.`object`.UpdatedValue
 import com.watering.watering_backend.domain.service.AutoWateringService
@@ -18,10 +18,10 @@ class AutoWateringController(
     private val autoWateringService: AutoWateringService
 ) {
     @PutMapping
-    fun enabled(@ModelAttribute autoWateringEnabledParameter: AutoWateringEnabledParameter): AutoWateringResponse {
+    fun changeEnabled(@ModelAttribute changeEnabledParameter: ChangeEnabledParameter): AutoWateringResponse {
         val (deviceId: UUID,
              oldEnabledValue: Boolean,
-             newEnabledValue: Boolean) = autoWateringService.changeEnabled(autoWateringEnabledParameter.deviceId, autoWateringEnabledParameter.enabled)
+             newEnabledValue: Boolean) = autoWateringService.changeEnabled(changeEnabledParameter.deviceId, changeEnabledParameter.enabled)
 
         return AutoWateringResponse(
             deviceId = deviceId,
