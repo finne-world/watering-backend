@@ -1,5 +1,6 @@
 package com.watering.watering_backend.application.controller
 
+import com.watering.watering_backend.application.controller.helper.getRequestParamName
 import com.watering.watering_backend.domain.constant.Error
 import com.watering.watering_backend.domain.exception.ApplicationException
 import com.watering.watering_backend.domain.exception.ResourceNotFoundException
@@ -11,9 +12,11 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindException
 import org.springframework.validation.FieldError
 import org.springframework.validation.ObjectError
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
 @RestControllerAdvice
@@ -40,6 +43,38 @@ class ControllerExceptionHandler: ResponseEntityExceptionHandler() {
     @ExceptionHandler(InsertFailedException::class)
     fun handleInsertFailedException(exception: InsertFailedException, request: WebRequest): ResponseEntity<Any> {
         return handleApplicationException(exception, request)
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
+    fun handleMethodArgumentTypeMismatchException(exception: MethodArgumentTypeMismatchException, request: WebRequest): ResponseEntity<Any> {
+        return super.handleExceptionInternal(
+            exception,
+            ErrorResponse(
+                httpStatus = HttpStatus.BAD_REQUEST,
+                errors = mapOf(Error.REQUIRE_PARAMETER.code to "Invalid parameter. `${getRequestParamName(exception.parameter)}`")
+            ),
+            HttpHeaders(),
+            HttpStatus.OK,
+            request
+        )
+    }
+
+    override fun handleMissingServletRequestParameter(
+        exception: MissingServletRequestParameterException,
+        headers: HttpHeaders,
+        httpStatus: HttpStatus,
+        request: WebRequest
+    ): ResponseEntity<Any> {
+        return super.handleExceptionInternal(
+            exception,
+            ErrorResponse(
+                httpStatus = httpStatus,
+                errors = mapOf(Error.REQUIRE_PARAMETER.code to "Required parameter. `${exception.parameterName}`")
+            ),
+            HttpHeaders(),
+            httpStatus,
+            request
+        )
     }
 
     override fun handleBindException(

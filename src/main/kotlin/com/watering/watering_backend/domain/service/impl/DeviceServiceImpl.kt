@@ -12,6 +12,7 @@ import com.watering.watering_backend.domain.repository.MemberDeviceMapRepository
 import com.watering.watering_backend.domain.repository.WateringSettingRepository
 import com.watering.watering_backend.domain.service.DeviceService
 import com.watering.watering_backend.domain.service.dto.device.GetCurrentDeviceResult
+import com.watering.watering_backend.domain.service.dto.device.GetDevicesResult
 import com.watering.watering_backend.domain.service.dto.device.RegisterDeviceResult
 import com.watering.watering_backend.lib.extension.getOrThrow
 import com.watering.watering_backend.lib.extension.runIfTrue
@@ -25,6 +26,14 @@ class DeviceServiceImpl(
     private val wateringSettingRepository: WateringSettingRepository,
     private val autoWateringSettingRepository: AutoWateringSettingRepository
 ): DeviceService {
+    override fun getDevices(memberId: Long): GetDevicesResult = transaction {
+        val devices: List<DeviceEntity> = deviceRepository.getDevicesByMemberId(memberId)
+
+        GetDevicesResult(
+            devices = devices
+        )
+    }
+
     override fun registerDevice(memberId: Long, name: String): RegisterDeviceResult = transaction {
         deviceRepository.getDevicesByMemberId(memberId).any {
             it.name == name
