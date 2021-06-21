@@ -1,5 +1,6 @@
 package com.watering.watering_backend.application.controller.api
 
+import com.watering.watering_backend.application.controller.helper.convertTo
 import com.watering.watering_backend.application.json.parameter.device.RegisterDeviceParameter
 import com.watering.watering_backend.application.json.parameter.device.GetCurrentDeviceParameter
 import com.watering.watering_backend.application.json.response.device.RegisterDeviceResponse
@@ -7,6 +8,7 @@ import com.watering.watering_backend.application.json.response.`object`.AutoWate
 import com.watering.watering_backend.application.json.response.`object`.Device
 import com.watering.watering_backend.application.json.response.`object`.WateringSetting
 import com.watering.watering_backend.application.json.response.device.GetCurrentDeviceResponse
+import com.watering.watering_backend.application.json.response.device.GetDevicesResponse
 import com.watering.watering_backend.domain.entity.AutoWateringSettingEntity
 import com.watering.watering_backend.domain.service.DeviceService
 import com.watering.watering_backend.domain.entity.DeviceEntity
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -24,6 +27,16 @@ class DeviceController(
     private val logger: Logger,
     private val deviceService: DeviceService
 ) {
+    @GetMapping
+    fun getDevices(@RequestParam("member_id") memberId: Long): GetDevicesResponse {
+        val (devices: List<DeviceEntity>) = deviceService.getDevices(memberId)
+
+        return GetDevicesResponse(
+            memberId = memberId,
+            devices = devices.map(::convertTo)
+        )
+    }
+
     @PostMapping
     fun register(@ModelAttribute registerDeviceParameter: RegisterDeviceParameter): RegisterDeviceResponse {
         val (createdDevice: DeviceEntity,
