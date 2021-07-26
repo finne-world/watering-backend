@@ -1,5 +1,6 @@
 const val springBootStarterThymeleaf: String = "org.springframework.boot:spring-boot-starter-thymeleaf"
 const val springBootStarterWeb: String = "org.springframework.boot:spring-boot-starter-web"
+const val springBootStarterSecurity: String = "org.springframework.boot:spring-boot-starter-security"
 const val springBootStarterJdbc: String = "org.springframework.boot:spring-boot-starter-jdbc"
 const val jacksonModuleKotlin: String = "com.fasterxml.jackson.module:jackson-module-kotlin"
 const val kotlinReflect: String = "org.jetbrains.kotlin:kotlin-reflect"
@@ -14,3 +15,5 @@ const val exposedCore: String = "org.jetbrains.exposed:exposed-core:${Versions.D
 const val exposedDao: String = "org.jetbrains.exposed:exposed-dao:${Versions.Dependency.EXPOSED}"
 const val exposedJdbc: String = "org.jetbrains.exposed:exposed-jdbc:${Versions.Dependency.EXPOSED}"
 const val exposedJavaTime: String = "org.jetbrains.exposed:exposed-java-time:${Versions.Dependency.EXPOSED}"
+const val javaJwt: String = "com.auth0:java-jwt:${Versions.Dependency.JAVA_JWT}"
+const val awsJavaSdkSsm: String = "com.amazonaws:aws-java-sdk-ssm:${Versions.Dependency.AWS_JAVA_SDK_SSM}"

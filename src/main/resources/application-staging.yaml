@@ -1,12 +1,12 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/watering_backend_development
-    username: watering_development_user
+    username: watering_staging_user
     password: ${DATABASE_PASSWORD}
 
 authentication:
   access-token:
-    iss: develop.watering.work
+    iss: staging.watering.work
     aud:
       - discordbot.watering.work
     exp: 3600
@@ -16,5 +16,5 @@ authentication:
 aws:
   parameter-store:
     jwt:
-      public-key: /develop/jwt/public_key
-      private-key: /develop/jwt/private_key
+      public-key: /staging/jwt/public_key
+      private-key: /staging/jwt/private_key
