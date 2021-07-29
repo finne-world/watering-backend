@@ -19,6 +19,7 @@ repositories {
 dependencies {
 	implementation(springBootStarterThymeleaf)
 	implementation(springBootStarterWeb)
+	implementation(springBootStarterSecurity)
 	implementation(springBootStarterJdbc)
 	implementation(jacksonModuleKotlin)
 	implementation(kotlinReflect)
@@ -33,6 +34,8 @@ dependencies {
 	implementation(exposedDao)
 	implementation(exposedJdbc)
 	implementation(exposedJavaTime)
+	implementation(javaJwt)
+	implementation(awsJavaSdkSsm)
 }
 
 tasks.withType<KotlinCompile> {

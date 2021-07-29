@@ -14,5 +14,7 @@ object Versions {
         const val ARROW: String = "0.13.2"
         const val OK_HTTP_3: String = "4.9.1"
         const val EXPOSED: String = "0.31.1"
+        const val JAVA_JWT: String = "3.18.1"
+        const val AWS_JAVA_SDK_SSM: String = "1.12.31"
     }
 }
