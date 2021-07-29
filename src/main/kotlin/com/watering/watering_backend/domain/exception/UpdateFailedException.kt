@@ -1,6 +1,6 @@
 package com.watering.watering_backend.domain.exception
 
-class InsertFailedException(
+class UpdateFailedException(
     errorDescription: String
 ): RuntimeException(
     errorDescription

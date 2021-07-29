@@ -5,7 +5,7 @@ import arrow.core.left
 import arrow.core.right
 import com.watering.watering_backend.domain.constant.Authority
 import com.watering.watering_backend.domain.entity.AuthorityEntity
-import com.watering.watering_backend.domain.exception.AuthorityNotFoundException
+import com.watering.watering_backend.domain.exception.ResourceNotFoundException
 import com.watering.watering_backend.domain.repository.AuthorityRepository
 import com.watering.watering_backend.infrastructure.table.AuthorityTable
 import com.watering.watering_backend.infrastructure.table.UserAuthorityMapTable
@@ -22,7 +22,7 @@ class AuthorityRepositoryImpl: AuthorityRepository {
         .map(AuthorityTable::toEntity)
     }
 
-    override fun getAuthoritiesByNameList(names: List<String>): Either<AuthorityNotFoundException, List<AuthorityEntity>> {
+    override fun getAuthoritiesByNameList(names: List<String>): Either<ResourceNotFoundException, List<AuthorityEntity>> {
         //TODO: サービスクラスに書くべきなのか迷う
         val invalidNames: List<String> = names.filter {
             !Authority.values().map {
@@ -30,7 +30,9 @@ class AuthorityRepositoryImpl: AuthorityRepository {
             }.contains(it.uppercase())
         }
         if (invalidNames.isNotEmpty()) {
-            return AuthorityNotFoundException(invalidNames).left()
+            return ResourceNotFoundException(
+                errorDescription = "Invalid authority name. [${invalidNames.joinToString(", ")}]"
+            ).left()
         }
 
         return AuthorityTable.select { AuthorityTable.name inList names }.map(AuthorityTable::toEntity).right()

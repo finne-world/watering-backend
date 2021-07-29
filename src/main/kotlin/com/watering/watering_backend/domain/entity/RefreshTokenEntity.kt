@@ -11,3 +11,7 @@ data class RefreshTokenEntity(
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
 )
+
+fun RefreshTokenEntity.isExpired(): Boolean {
+    return this.expiresAt.isBefore(LocalDateTime.now())
+}

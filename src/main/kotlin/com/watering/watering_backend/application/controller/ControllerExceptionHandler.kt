@@ -6,6 +6,10 @@ import com.watering.watering_backend.domain.exception.ApplicationException
 import com.watering.watering_backend.domain.exception.ResourceNotFoundException
 import com.watering.watering_backend.domain.exception.InsertFailedException
 import com.watering.watering_backend.application.json.response.ErrorResponse
+import com.watering.watering_backend.domain.exception.RefreshTokenExpiredException
+import com.watering.watering_backend.domain.exception.ResourceAlreadyExistsException
+import com.watering.watering_backend.domain.exception.ResourceCreateFailedException
+import com.watering.watering_backend.domain.exception.UserRegistrationFailedException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,7 +25,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 class ControllerExceptionHandler: ResponseEntityExceptionHandler() {
-    @ExceptionHandler(ApplicationException::class)
+    @ExceptionHandler(ApplicationException::class,
+                      ResourceNotFoundException::class,
+                      ResourceAlreadyExistsException::class,
+                      ResourceCreateFailedException::class,
+                      RefreshTokenExpiredException::class,
+                      UserRegistrationFailedException::class)
     fun handleApplicationException(exception: ApplicationException, request: WebRequest): ResponseEntity<Any> {
         return super.handleExceptionInternal(
             exception,
@@ -33,16 +42,6 @@ class ControllerExceptionHandler: ResponseEntityExceptionHandler() {
             exception.httpStatus,
             request
         )
-    }
-
-    @ExceptionHandler(ResourceNotFoundException::class)
-    fun handleDeviceNotFoundException(exception: ResourceNotFoundException, request: WebRequest): ResponseEntity<Any> {
-        return handleApplicationException(exception, request)
-    }
-
-    @ExceptionHandler(InsertFailedException::class)
-    fun handleInsertFailedException(exception: InsertFailedException, request: WebRequest): ResponseEntity<Any> {
-        return handleApplicationException(exception, request)
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException::class)

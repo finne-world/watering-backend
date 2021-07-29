@@ -37,7 +37,11 @@ class WateringSettingRepositoryImpl(
         }
         .map(WateringSettingTable::toEntity)
         .firstOrNone()
-        .toEither { ResourceNotFoundException("device resource not found. uuid=${deviceId}.") }
+        .toEither {
+            ResourceNotFoundException(
+                errorDescription = "device resource not found. uuid=${deviceId}."
+            )
+        }
     }
 
     override fun update(deviceId: UUID, waterAmount: Int?) {
