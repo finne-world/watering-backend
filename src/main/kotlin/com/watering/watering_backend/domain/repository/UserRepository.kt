@@ -9,6 +9,8 @@ import com.watering.watering_backend.domain.exception.InsertFailedException
 interface UserRepository {
     fun create(username: String, encodedPassword: String, authorities: List<AuthorityEntity>): Either<InsertFailedException, UserEntity>
 
+    fun getById(userId: Long): Option<UserEntity>
+
     fun getByUsername(username: String): Option<UserEntity>
 
     fun existsByUsername(username: String): Boolean

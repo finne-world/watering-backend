@@ -1,6 +1,7 @@
 package com.watering.watering_backend.domain.service.shared.impl
 
 import com.auth0.jwt.interfaces.JWTVerifier
+import com.watering.watering_backend.domain.entity.UserEntity
 import com.watering.watering_backend.domain.service.shared.AccessTokenSharedService
 import com.watering.watering_backend.domain.service.shared.dto.access_token.CreateAccessTokenResult
 import com.watering.watering_backend.lib.JWTProvider
@@ -14,7 +15,13 @@ class AccessTokenSharedServiceImpl(
 ): AccessTokenSharedService {
     override fun createAccessToken(userDetails: UserDetails): CreateAccessTokenResult {
         return CreateAccessTokenResult(
-            this.jwtProvider.createToken(userDetails)
+            this.jwtProvider.createToken(userDetails.username)
+        )
+    }
+
+    override fun createAccessToken(userEntity: UserEntity): CreateAccessTokenResult {
+        return CreateAccessTokenResult(
+            this.jwtProvider.createToken(userEntity.username)
         )
     }
 }

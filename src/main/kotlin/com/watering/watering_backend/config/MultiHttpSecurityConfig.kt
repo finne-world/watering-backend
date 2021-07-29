@@ -31,7 +31,7 @@ class MultiHttpSecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(this.unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/api/authentication/signin", "/api/authentication/signup").permitAll()
+                .antMatchers("/api/authentication/signin", "/api/authentication/signup", "/api/authentication/refresh_token").permitAll()
                 .anyRequest().hasRole(Authority.SERVICE.name)
 
             http.addFilterBefore(this.jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter::class.java)

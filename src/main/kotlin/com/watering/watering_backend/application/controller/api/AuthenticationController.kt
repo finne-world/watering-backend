@@ -1,7 +1,9 @@
 package com.watering.watering_backend.application.controller.api
 
+import com.watering.watering_backend.application.json.parameter.authentication.RefreshTokenRequest
 import com.watering.watering_backend.application.json.parameter.authentication.SigninRequest
 import com.watering.watering_backend.application.json.parameter.authentication.SignupRequest
+import com.watering.watering_backend.application.json.response.authentication.RefreshTokenResponse
 import com.watering.watering_backend.application.json.response.authentication.SigninResponse
 import com.watering.watering_backend.application.json.response.authentication.SignupResponse
 import com.watering.watering_backend.domain.constant.TokenType
@@ -53,6 +55,20 @@ class AuthenticationController(
             id = userEntity.id,
             username = userEntity.username,
             authorities = authorities.map { it.name }
+        )
+    }
+
+    @PostMapping("refresh_token")
+    fun refreshToken(@ModelAttribute refreshTokenRequest: RefreshTokenRequest): RefreshTokenResponse {
+        val (accessToken: AccessTokenEntity,
+             refreshToken: RefreshTokenEntity,
+             tokenType: TokenType) = this.apiAuthenticationService.refreshAccessToken(refreshTokenRequest.refreshToken)
+
+        return RefreshTokenResponse(
+            accessToken = accessToken.token,
+            expiresIn = accessToken.expiresIn,
+            refreshToken = refreshToken.token.toString(),
+            tokenType = tokenType.value
         )
     }
 }

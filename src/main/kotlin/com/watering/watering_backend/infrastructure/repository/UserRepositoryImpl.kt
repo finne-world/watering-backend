@@ -4,7 +4,6 @@ import arrow.core.Either
 import arrow.core.Option
 import arrow.core.firstOrNone
 import arrow.core.getOrElse
-import arrow.core.getOrHandle
 import arrow.core.left
 import arrow.core.right
 import arrow.core.toOption
@@ -49,6 +48,10 @@ class UserRepositoryImpl: UserRepository {
         }
 
         return createdUser.right()
+    }
+
+    override fun getById(userId: Long): Option<UserEntity> {
+        return UserTable.select { UserTable.id eq userId }.map(UserTable::toEntity).firstOrNone()
     }
 
     override fun getByUsername(username: String): Option<UserEntity> {

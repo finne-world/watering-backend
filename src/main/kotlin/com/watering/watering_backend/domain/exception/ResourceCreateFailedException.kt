@@ -3,9 +3,9 @@ package com.watering.watering_backend.domain.exception
 import com.watering.watering_backend.domain.constant.Error
 import org.springframework.http.HttpStatus
 
-class UserRegistrationFailedException(
+class ResourceCreateFailedException(
     httpStatus: HttpStatus = HttpStatus.BAD_REQUEST,
-    error: Error = Error.FAILED_TO_REGISTER_USER,
+    error: Error = Error.FAILED_TO_CREATE_RESOURCE,
     errorDescription: String,
     errorMessage: String = errorDescription
 ): ApplicationException(
