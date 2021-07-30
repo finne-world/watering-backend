@@ -4,7 +4,6 @@ import com.watering.watering_backend.application.controller.helper.getRequestPar
 import com.watering.watering_backend.domain.constant.Error
 import com.watering.watering_backend.domain.exception.ApplicationException
 import com.watering.watering_backend.domain.exception.ResourceNotFoundException
-import com.watering.watering_backend.domain.exception.InsertFailedException
 import com.watering.watering_backend.application.json.response.ErrorResponse
 import com.watering.watering_backend.domain.exception.RefreshTokenExpiredException
 import com.watering.watering_backend.domain.exception.ResourceAlreadyExistsException

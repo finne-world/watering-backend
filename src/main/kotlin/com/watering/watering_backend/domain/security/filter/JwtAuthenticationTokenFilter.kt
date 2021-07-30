@@ -1,8 +1,6 @@
 package com.watering.watering_backend.domain.security.filter
 
 import arrow.core.getOrElse
-import com.auth0.jwt.JWT
-import com.auth0.jwt.interfaces.DecodedJWT
 import com.auth0.jwt.interfaces.JWTVerifier
 import com.watering.watering_backend.domain.entity.AuthorityEntity
 import com.watering.watering_backend.domain.service.AuthorityService

@@ -21,6 +21,7 @@ dependencies {
 	implementation(springBootStarterWeb)
 	implementation(springBootStarterSecurity)
 	implementation(springBootStarterJdbc)
+	annotationProcessor(springBootConfigurationProcessor)
 	implementation(jacksonModuleKotlin)
 	implementation(kotlinReflect)
 	implementation(kotlinStdlibJdk8)
