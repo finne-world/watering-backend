@@ -15,4 +15,6 @@ interface RefreshTokenSharedService {
     fun exchangeRefreshToken(refreshToken: RefreshTokenEntity): RefreshTokenEntity
 
     fun existsByUserId(userId: Long): Boolean
+
+    fun deleteByUserId(userId: Long): Boolean
 }

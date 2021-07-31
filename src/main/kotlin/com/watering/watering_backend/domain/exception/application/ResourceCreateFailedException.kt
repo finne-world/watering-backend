@@ -1,6 +1,7 @@
-package com.watering.watering_backend.domain.exception
+package com.watering.watering_backend.domain.exception.application
 
 import com.watering.watering_backend.domain.constant.Error
+import com.watering.watering_backend.domain.exception.application.ApplicationException
 import org.springframework.http.HttpStatus
 
 class ResourceCreateFailedException(

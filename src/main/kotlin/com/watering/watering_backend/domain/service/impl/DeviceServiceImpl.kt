@@ -4,8 +4,8 @@ import arrow.core.getOrElse
 import com.watering.watering_backend.domain.entity.AutoWateringSettingEntity
 import com.watering.watering_backend.domain.entity.DeviceEntity
 import com.watering.watering_backend.domain.entity.WateringSettingEntity
-import com.watering.watering_backend.domain.exception.ResourceAlreadyExistsException
-import com.watering.watering_backend.domain.exception.ResourceNotFoundException
+import com.watering.watering_backend.domain.exception.application.ResourceAlreadyExistsException
+import com.watering.watering_backend.domain.exception.application.ResourceNotFoundException
 import com.watering.watering_backend.domain.repository.AutoWateringSettingRepository
 import com.watering.watering_backend.domain.repository.DeviceRepository
 import com.watering.watering_backend.domain.repository.MemberDeviceMapRepository

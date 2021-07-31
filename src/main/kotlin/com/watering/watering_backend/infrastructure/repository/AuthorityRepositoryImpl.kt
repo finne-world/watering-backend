@@ -5,7 +5,7 @@ import arrow.core.left
 import arrow.core.right
 import com.watering.watering_backend.domain.constant.Authority
 import com.watering.watering_backend.domain.entity.AuthorityEntity
-import com.watering.watering_backend.domain.exception.ResourceNotFoundException
+import com.watering.watering_backend.domain.exception.application.ResourceNotFoundException
 import com.watering.watering_backend.domain.repository.AuthorityRepository
 import com.watering.watering_backend.infrastructure.table.AuthorityTable
 import com.watering.watering_backend.infrastructure.table.UserAuthorityMapTable

@@ -10,11 +10,11 @@ import com.watering.watering_backend.domain.entity.AuthorityEntity
 import com.watering.watering_backend.domain.entity.RefreshTokenEntity
 import com.watering.watering_backend.domain.entity.UserEntity
 import com.watering.watering_backend.domain.entity.isExpired
-import com.watering.watering_backend.domain.exception.ApplicationException
-import com.watering.watering_backend.domain.exception.RefreshTokenExpiredException
-import com.watering.watering_backend.domain.exception.ResourceCreateFailedException
-import com.watering.watering_backend.domain.exception.ResourceNotFoundException
-import com.watering.watering_backend.domain.exception.UserRegistrationFailedException
+import com.watering.watering_backend.domain.exception.application.ApplicationException
+import com.watering.watering_backend.domain.exception.application.RefreshTokenExpiredException
+import com.watering.watering_backend.domain.exception.application.ResourceCreateFailedException
+import com.watering.watering_backend.domain.exception.application.ResourceNotFoundException
+import com.watering.watering_backend.domain.exception.application.UserRegistrationFailedException
 import com.watering.watering_backend.domain.repository.AuthorityRepository
 import com.watering.watering_backend.domain.repository.UserRepository
 import com.watering.watering_backend.domain.service.ApiAuthenticationService
@@ -25,7 +25,7 @@ import com.watering.watering_backend.domain.service.shared.AccessTokenSharedServ
 import com.watering.watering_backend.domain.service.shared.RefreshTokenSharedService
 import com.watering.watering_backend.lib.extension.getErrorDescription
 import com.watering.watering_backend.lib.extension.getOrThrow
-import com.watering.watering_backend.lib.get
+import com.watering.watering_backend.lib.extension.get
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
@@ -65,14 +65,13 @@ class ApiAuthenticationServiceImpl(
                                                    }
                                                    .getOrThrow()
 
-        val (accessToken: AccessTokenEntity) = accessTokenSharedService.createAccessToken(userDetails)
+        val accessToken: AccessTokenEntity = accessTokenSharedService.createAccessToken(userDetails)
 
-        val refreshToken: RefreshTokenEntity = if (refreshTokenSharedService.existsByUserId(userEntity.id)) {
-            refreshTokenSharedService.exchangeRefreshToken(userEntity.id)
+        if (refreshTokenSharedService.existsByUserId(userEntity.id)) {
+            refreshTokenSharedService.deleteByUserId(userEntity.id)
         }
-        else {
-            refreshTokenSharedService.registerRefreshToken(userDetails)
-        }
+
+        val refreshToken: RefreshTokenEntity = refreshTokenSharedService.registerRefreshToken(userDetails)
 
         val authorities: List<String> = userDetails.authorities.map { it.authority }
 
@@ -135,7 +134,7 @@ class ApiAuthenticationServiceImpl(
 
         val user: UserEntity = userRepository.getById(refreshToken.userId).get()
 
-        val (newAccessToken: AccessTokenEntity) = accessTokenSharedService.createAccessToken(user)
+        val newAccessToken: AccessTokenEntity = accessTokenSharedService.createAccessToken(user)
         val newRefreshToken: RefreshTokenEntity = refreshTokenSharedService.exchangeRefreshToken(refreshToken)
 
         RefreshAccessTokenResult(

@@ -3,7 +3,7 @@ package com.watering.watering_backend.infrastructure.repository
 import arrow.core.Either
 import arrow.core.firstOrNone
 import com.watering.watering_backend.domain.entity.WateringSettingEntity
-import com.watering.watering_backend.domain.exception.ResourceNotFoundException
+import com.watering.watering_backend.domain.exception.application.ResourceNotFoundException
 import com.watering.watering_backend.domain.exception.InsertFailedException
 import com.watering.watering_backend.domain.repository.WateringSettingRepository
 import com.watering.watering_backend.infrastructure.table.WateringSettingTable

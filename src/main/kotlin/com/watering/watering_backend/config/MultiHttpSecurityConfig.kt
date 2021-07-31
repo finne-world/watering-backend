@@ -1,6 +1,7 @@
 package com.watering.watering_backend.config
 
 import com.watering.watering_backend.domain.constant.Authority
+import com.watering.watering_backend.domain.security.filter.ExceptionHandlerFilter
 import com.watering.watering_backend.domain.security.filter.JwtAuthenticationTokenFilter
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
@@ -23,6 +24,7 @@ class MultiHttpSecurityConfig {
         private val passwordEncoder: PasswordEncoder,
         private val userDetailsService: UserDetailsService,
         private val unauthorizedHandler: AuthenticationEntryPoint,
+        private val exceptionHandlerFilter: ExceptionHandlerFilter,
         private val jwtAuthenticationTokenFilter: JwtAuthenticationTokenFilter
     ): WebSecurityConfigurerAdapter() {
         override fun configure(http: HttpSecurity) {
@@ -35,6 +37,7 @@ class MultiHttpSecurityConfig {
                 .anyRequest().hasRole(Authority.SERVICE.name)
 
             http.addFilterBefore(this.jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
+                .addFilterBefore(this.exceptionHandlerFilter, JwtAuthenticationTokenFilter::class.java)
         }
 
         override fun configure(auth: AuthenticationManagerBuilder) {

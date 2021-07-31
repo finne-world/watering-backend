@@ -1,7 +1,7 @@
 package com.watering.watering_backend.domain.service.impl
 
 import arrow.core.getOrElse
-import com.watering.watering_backend.domain.exception.ResourceNotFoundException
+import com.watering.watering_backend.domain.exception.application.ResourceNotFoundException
 import com.watering.watering_backend.domain.repository.AutoWateringSettingRepository
 import com.watering.watering_backend.domain.service.AutoWateringService
 import com.watering.watering_backend.domain.service.dto.auto_watering.ChangeEnabledResult

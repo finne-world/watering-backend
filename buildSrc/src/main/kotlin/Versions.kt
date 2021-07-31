@@ -4,7 +4,7 @@ object Versions {
 
     object Plugin {
         const val KOTLIN: String = KOTLIN_VERSION
-        const val SPRING_BOOT: String = "2.5.0"
+        const val SPRING_BOOT: String = "2.5.3"
         const val DEPENDENCY_MANAGEMENT: String = "1.0.11.RELEASE"
         const val FLYWAY: String = "7.5.4"
     }
