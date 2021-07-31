@@ -26,11 +26,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 class ControllerExceptionHandler: ResponseEntityExceptionHandler() {
     @ExceptionHandler(
         ApplicationException::class,
-                      ResourceNotFoundException::class,
-                      ResourceAlreadyExistsException::class,
-                      ResourceCreateFailedException::class,
-                      RefreshTokenExpiredException::class,
-                      UserRegistrationFailedException::class)
+        ResourceNotFoundException::class,
+        ResourceAlreadyExistsException::class,
+        ResourceCreateFailedException::class,
+        RefreshTokenExpiredException::class,
+        UserRegistrationFailedException::class)
     fun handleApplicationException(exception: ApplicationException, request: WebRequest): ResponseEntity<Any> {
         return super.handleExceptionInternal(
             exception,
