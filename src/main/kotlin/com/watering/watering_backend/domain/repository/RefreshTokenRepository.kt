@@ -19,4 +19,6 @@ interface RefreshTokenRepository {
     fun getByUUID(tokenUUID: UUID): Option<RefreshTokenEntity>
 
     fun existsByUserId(userId: Long): Boolean
+
+    fun deleteByUserId(userId: Long): Boolean
 }

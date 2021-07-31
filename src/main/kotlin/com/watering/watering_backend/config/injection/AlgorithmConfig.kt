@@ -10,7 +10,6 @@ import java.security.KeyFactory
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.security.spec.PKCS8EncodedKeySpec
-import java.security.spec.RSAPublicKeySpec
 import java.security.spec.X509EncodedKeySpec
 
 @Configuration
@@ -21,6 +20,7 @@ class AlgorithmConfig(
     companion object {
         val KEY_FACTORY: KeyFactory = KeyFactory.getInstance("RSA")
     }
+
     @Bean
     fun getAlgorithm(): Algorithm {
         val public = getPublicKey()

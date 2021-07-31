@@ -1,4 +1,4 @@
-package com.watering.watering_backend.lib
+package com.watering.watering_backend.lib.extension
 
 import arrow.core.Option
 import arrow.core.getOrElse

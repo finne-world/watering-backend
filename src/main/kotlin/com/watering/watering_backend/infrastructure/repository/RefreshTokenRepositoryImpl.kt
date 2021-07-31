@@ -10,6 +10,7 @@ import com.watering.watering_backend.domain.repository.RefreshTokenRepository
 import com.watering.watering_backend.infrastructure.table.RefreshTokenTable
 import com.watering.watering_backend.lib.extension.isPositive
 import com.watering.watering_backend.lib.extension.runIf
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.update
@@ -54,5 +55,9 @@ class RefreshTokenRepositoryImpl: RefreshTokenRepository {
 
     override fun existsByUserId(userId: Long): Boolean {
         return RefreshTokenTable.select { RefreshTokenTable.userId eq userId }.count() > 0
+    }
+
+    override fun deleteByUserId(userId: Long): Boolean {
+        return RefreshTokenTable.deleteWhere { RefreshTokenTable.userId eq userId } > 0
     }
 }

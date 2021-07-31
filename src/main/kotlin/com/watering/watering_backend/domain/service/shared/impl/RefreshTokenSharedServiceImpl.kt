@@ -5,14 +5,13 @@ import com.watering.watering_backend.config.property.AuthenticationProperties
 import com.watering.watering_backend.domain.constant.Error
 import com.watering.watering_backend.domain.entity.RefreshTokenEntity
 import com.watering.watering_backend.domain.entity.UserEntity
-import com.watering.watering_backend.domain.exception.ApplicationException
-import com.watering.watering_backend.domain.exception.ResourceNotFoundException
+import com.watering.watering_backend.domain.exception.application.ApplicationException
+import com.watering.watering_backend.domain.exception.application.ResourceNotFoundException
 import com.watering.watering_backend.domain.repository.RefreshTokenRepository
 import com.watering.watering_backend.domain.repository.UserRepository
 import com.watering.watering_backend.domain.service.shared.RefreshTokenSharedService
 import com.watering.watering_backend.lib.extension.getOrThrow
-import com.watering.watering_backend.lib.get
-import org.jetbrains.exposed.sql.transactions.transaction
+import com.watering.watering_backend.lib.extension.get
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
@@ -26,11 +25,11 @@ class RefreshTokenSharedServiceImpl(
     private val refreshTokenRepository: RefreshTokenRepository,
     private val authenticationProperties: AuthenticationProperties
 ): RefreshTokenSharedService {
-    override fun getByTokenUUID(tokenUUID: UUID): Option<RefreshTokenEntity> = transaction {
-        refreshTokenRepository.getByUUID(tokenUUID)
+    override fun getByTokenUUID(tokenUUID: UUID): Option<RefreshTokenEntity> {
+        return refreshTokenRepository.getByUUID(tokenUUID)
     }
 
-    override fun registerRefreshToken(userDetails: UserDetails): RefreshTokenEntity = transaction {
+    override fun registerRefreshToken(userDetails: UserDetails): RefreshTokenEntity {
         val user: UserEntity = userRepository.getByUsername(userDetails.username)
                                              .toEither {
                                                  ResourceNotFoundException(
@@ -42,24 +41,28 @@ class RefreshTokenSharedServiceImpl(
                                              }
                                              .getOrThrow()
 
-        refreshTokenRepository.create(
+        return refreshTokenRepository.create(
             user.id,
             LocalDateTime.now().plusSeconds(authenticationProperties.refreshToken.exp)
         ).getOrThrow()
     }
 
-    override fun exchangeRefreshToken(userId: Long): RefreshTokenEntity = transaction {
+    override fun exchangeRefreshToken(userId: Long): RefreshTokenEntity {
         val userEntity: UserEntity = userRepository.getById(userId).get()
 
-        exchangeRefreshToken(refreshTokenRepository.getByUserId(userEntity.id).get())
+        return exchangeRefreshToken(refreshTokenRepository.getByUserId(userEntity.id).get())
     }
 
-    override fun exchangeRefreshToken(refreshToken: RefreshTokenEntity): RefreshTokenEntity = transaction {
+    override fun exchangeRefreshToken(refreshToken: RefreshTokenEntity): RefreshTokenEntity {
         refreshTokenRepository.updateToken(refreshToken.id, UUID.randomUUID())
-        refreshTokenRepository.getById(refreshToken.id).get()
+        return refreshTokenRepository.getById(refreshToken.id).get()
     }
 
-    override fun existsByUserId(userId: Long): Boolean = transaction {
-        refreshTokenRepository.existsByUserId(userId)
+    override fun existsByUserId(userId: Long): Boolean {
+        return refreshTokenRepository.existsByUserId(userId)
+    }
+
+    override fun deleteByUserId(userId: Long): Boolean {
+        return refreshTokenRepository.deleteByUserId(userId)
     }
 }

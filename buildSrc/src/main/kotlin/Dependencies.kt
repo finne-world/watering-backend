@@ -2,6 +2,7 @@ const val springBootStarterThymeleaf: String = "org.springframework.boot:spring-
 const val springBootStarterWeb: String = "org.springframework.boot:spring-boot-starter-web"
 const val springBootStarterSecurity: String = "org.springframework.boot:spring-boot-starter-security"
 const val springBootStarterJdbc: String = "org.springframework.boot:spring-boot-starter-jdbc"
+const val springBootConfigurationProcessor: String = "org.springframework.boot:spring-boot-configuration-processor"
 const val jacksonModuleKotlin: String = "com.fasterxml.jackson.module:jackson-module-kotlin"
 const val kotlinReflect: String = "org.jetbrains.kotlin:kotlin-reflect"
 const val kotlinStdlibJdk8: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8"

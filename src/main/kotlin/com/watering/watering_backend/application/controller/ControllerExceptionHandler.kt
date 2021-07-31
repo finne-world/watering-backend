@@ -2,14 +2,13 @@ package com.watering.watering_backend.application.controller
 
 import com.watering.watering_backend.application.controller.helper.getRequestParamName
 import com.watering.watering_backend.domain.constant.Error
-import com.watering.watering_backend.domain.exception.ApplicationException
-import com.watering.watering_backend.domain.exception.ResourceNotFoundException
-import com.watering.watering_backend.domain.exception.InsertFailedException
+import com.watering.watering_backend.domain.exception.application.ApplicationException
+import com.watering.watering_backend.domain.exception.application.ResourceNotFoundException
 import com.watering.watering_backend.application.json.response.ErrorResponse
-import com.watering.watering_backend.domain.exception.RefreshTokenExpiredException
-import com.watering.watering_backend.domain.exception.ResourceAlreadyExistsException
-import com.watering.watering_backend.domain.exception.ResourceCreateFailedException
-import com.watering.watering_backend.domain.exception.UserRegistrationFailedException
+import com.watering.watering_backend.domain.exception.application.RefreshTokenExpiredException
+import com.watering.watering_backend.domain.exception.application.ResourceAlreadyExistsException
+import com.watering.watering_backend.domain.exception.application.ResourceCreateFailedException
+import com.watering.watering_backend.domain.exception.application.UserRegistrationFailedException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -25,7 +24,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 class ControllerExceptionHandler: ResponseEntityExceptionHandler() {
-    @ExceptionHandler(ApplicationException::class,
+    @ExceptionHandler(
+        ApplicationException::class,
                       ResourceNotFoundException::class,
                       ResourceAlreadyExistsException::class,
                       ResourceCreateFailedException::class,

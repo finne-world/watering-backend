@@ -8,7 +8,7 @@ data class SigninResponse(
     val username: String,
     val authorities: List<String>,
     val accessToken: String,
-    val refreshToken: String,
     val expiresIn: Long,
+    val refreshToken: String,
     val tokenType: String
 )
