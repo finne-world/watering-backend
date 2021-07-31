@@ -12,10 +12,11 @@ import com.watering.watering_backend.domain.entity.AuthorityEntity
 import com.watering.watering_backend.domain.entity.RefreshTokenEntity
 import com.watering.watering_backend.domain.entity.UserEntity
 import com.watering.watering_backend.domain.service.ApiAuthenticationService
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/authentication")
@@ -23,7 +24,7 @@ class AuthenticationController(
     private val apiAuthenticationService: ApiAuthenticationService
 ) {
     @PostMapping("signin")
-    fun signin(@ModelAttribute signinRequest: SigninRequest): SigninResponse {
+    fun signin(@RequestBody signinRequest: SigninRequest): SigninResponse {
         val (userEntity: UserEntity,
              accessToken: AccessTokenEntity,
              refreshToken: RefreshTokenEntity,
@@ -42,7 +43,7 @@ class AuthenticationController(
 
     //TODO: 開発用アカウント登録API（リリース時には削除する）
     @PostMapping("signup")
-    fun signup(@ModelAttribute signupRequest: SignupRequest): SignupResponse {
+    fun signup(@RequestBody signupRequest: SignupRequest): SignupResponse {
         val (userEntity,
              authorities: List<AuthorityEntity>
         ) = this.apiAuthenticationService.registerUser(
@@ -59,7 +60,7 @@ class AuthenticationController(
     }
 
     @PostMapping("refresh_token")
-    fun refreshToken(@ModelAttribute refreshTokenRequest: RefreshTokenRequest): RefreshTokenResponse {
+    fun refreshToken(@RequestBody @Valid refreshTokenRequest: RefreshTokenRequest): RefreshTokenResponse {
         val (accessToken: AccessTokenEntity,
              refreshToken: RefreshTokenEntity,
              tokenType: TokenType) = this.apiAuthenticationService.refreshAccessToken(refreshTokenRequest.refreshToken)

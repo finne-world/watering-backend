@@ -15,8 +15,8 @@ import com.watering.watering_backend.domain.entity.DeviceEntity
 import com.watering.watering_backend.domain.entity.WateringSettingEntity
 import org.slf4j.Logger
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -38,7 +38,7 @@ class DeviceController(
     }
 
     @PostMapping
-    fun register(@ModelAttribute registerDeviceParameter: RegisterDeviceParameter): RegisterDeviceResponse {
+    fun register(@RequestBody registerDeviceParameter: RegisterDeviceParameter): RegisterDeviceResponse {
         val (createdDevice: DeviceEntity,
              createdWateringSetting: WateringSettingEntity,
              createdAutoWateringSetting: AutoWateringSettingEntity
@@ -60,7 +60,7 @@ class DeviceController(
     }
 
     @GetMapping("current")
-    fun getCurrentDevice(@ModelAttribute getCurrentDeviceParameter: GetCurrentDeviceParameter): GetCurrentDeviceResponse {
+    fun getCurrentDevice(@RequestBody getCurrentDeviceParameter: GetCurrentDeviceParameter): GetCurrentDeviceResponse {
         val (currentDevice: DeviceEntity) = deviceService.getCurrentDevice(getCurrentDeviceParameter.memberId)
 
         return GetCurrentDeviceResponse(
