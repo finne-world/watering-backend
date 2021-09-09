@@ -19,7 +19,19 @@ class ControllerAspect(
         @annotation(com.watering.watering_backend.domain.annotation.aspect.CombinationOfUserAndDevice) &&
         args(userId, deviceId, ..)
     """)
-    fun validateCombination(userId: Long, deviceId: Long) {
+    fun methodValidateCombination(userId: Long, deviceId: Long) {
+        this.validateCombination(userId, deviceId)
+    }
+
+    @Before("""
+        @within(com.watering.watering_backend.domain.annotation.aspect.CombinationOfUserAndDevice) &&
+        args(userId, deviceId, ..)
+    """)
+    fun classValidateCombination(userId: Long, deviceId: Long) {
+        this.validateCombination(userId, deviceId)
+    }
+
+    private fun validateCombination(userId: Long, deviceId: Long) {
         val device: DeviceEntity = this.deviceService.getById(deviceId)
 
         if (device.userId != userId) {

@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @RestController
 @RequestMapping("/api/users/{user_id}/devices/{device_id}/setting")
+@CombinationOfUserAndDevice
 class SettingController(
     private val logger: Logger,
     private val settingService: SettingService
 ) {
     @GetMapping
-    @CombinationOfUserAndDevice
     fun get(
         @PathVariable("user_id") userId: Long,
         @PathVariable("device_id") deviceId: Long
