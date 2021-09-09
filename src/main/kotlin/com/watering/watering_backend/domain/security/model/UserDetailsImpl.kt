@@ -1,13 +1,15 @@
 package com.watering.watering_backend.domain.security.model
 
+import com.watering.watering_backend.domain.entity.AuthorityEntity
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class UserDetailsImpl(
     private val id: Long,
     private val username: String,
     private val password: String,
-    private val authorities: List<GrantedAuthority>
+    private val authorities: List<AuthorityEntity>
 ): UserDetails {
     override fun getUsername(): String {
         return this.username
@@ -18,7 +20,7 @@ class UserDetailsImpl(
     }
 
     override fun getAuthorities(): List<GrantedAuthority> {
-        return this.authorities
+        return this.authorities.map { SimpleGrantedAuthority("ROLE_${it.name}") }
     }
 
     override fun isAccountNonExpired(): Boolean = true

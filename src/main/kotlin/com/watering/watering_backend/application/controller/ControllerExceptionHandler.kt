@@ -1,6 +1,7 @@
 package com.watering.watering_backend.application.controller
 
 import com.fasterxml.jackson.core.JsonParseException
+import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import com.watering.watering_backend.application.controller.helper.getRequestParamName
@@ -8,9 +9,11 @@ import com.watering.watering_backend.domain.constant.Error
 import com.watering.watering_backend.domain.exception.application.ApplicationException
 import com.watering.watering_backend.domain.exception.application.ResourceNotFoundException
 import com.watering.watering_backend.application.json.response.ErrorResponse
+import com.watering.watering_backend.domain.exception.application.MultipleApplicationException
 import com.watering.watering_backend.domain.exception.application.RefreshTokenExpiredException
 import com.watering.watering_backend.domain.exception.application.ResourceAlreadyExistsException
 import com.watering.watering_backend.domain.exception.application.ResourceCreateFailedException
+import com.watering.watering_backend.domain.exception.application.ResourceUpdateFailedException
 import com.watering.watering_backend.domain.exception.application.UserRegistrationFailedException
 import com.watering.watering_backend.lib.extension.getRequestURI
 import org.springframework.http.HttpHeaders
@@ -36,19 +39,33 @@ class ControllerExceptionHandler: ResponseEntityExceptionHandler() {
         ResourceNotFoundException::class,
         ResourceAlreadyExistsException::class,
         ResourceCreateFailedException::class,
+        ResourceUpdateFailedException::class,
         RefreshTokenExpiredException::class,
         UserRegistrationFailedException::class)
     fun handleApplicationException(exception: ApplicationException, request: WebRequest): ResponseEntity<Any> {
-        return super.handleExceptionInternal(
+        return this.handleException(
             exception,
+            exception.httpStatus,
+            request,
             ErrorResponse(
                 httpStatus = exception.httpStatus,
                 errors = mapOf(exception.errorCode to exception.errorMessage),
                 path = request.getRequestURI()
-            ),
-            HttpHeaders(),
+            )
+        )
+    }
+
+    @ExceptionHandler(MultipleApplicationException::class)
+    fun handleMultipleApplicationException(exception: MultipleApplicationException, request: WebRequest): ResponseEntity<Any> {
+        return this.handleException(
+            exception,
             exception.httpStatus,
-            request
+            request,
+            ErrorResponse(
+                httpStatus = exception.httpStatus,
+                errors = exception.errors.associate { it.errorCode to it.errorMessage },
+                path = request.getRequestURI()
+            )
         )
     }
 
@@ -93,6 +110,7 @@ class ControllerExceptionHandler: ResponseEntityExceptionHandler() {
                 errors = cause.path.associate { Error.INVALID_PARAMETER.code to "Invalid parameter [${it.fieldName}]." },
                 path = request.getRequestURI()
             )
+            is JsonMappingException,
             is JsonParseException -> ErrorResponse(
                 httpStatus = status,
                 errors = mapOf(Error.INVALID_REQUEST_BODY.code to "Invalid request body."),
@@ -199,6 +217,21 @@ class ControllerExceptionHandler: ResponseEntityExceptionHandler() {
                 path = request.getRequestURI()
             ),
             headers,
+            httpStatus,
+            request
+        )
+    }
+
+    private fun handleException(
+        exception: Exception,
+        httpStatus: HttpStatus,
+        request: WebRequest,
+        errorResponse: ErrorResponse
+    ): ResponseEntity<Any> {
+        return super.handleExceptionInternal(
+            exception,
+            errorResponse,
+            HttpHeaders(),
             httpStatus,
             request
         )

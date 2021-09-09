@@ -3,15 +3,21 @@ package com.watering.watering_backend.domain.repository
 import arrow.core.Either
 import arrow.core.Option
 import com.watering.watering_backend.domain.entity.DeviceEntity
+import com.watering.watering_backend.domain.entity.SettingEntity
+import com.watering.watering_backend.domain.entity.form.DeviceForm
 import com.watering.watering_backend.domain.exception.InsertFailedException
-import java.util.UUID
+import com.watering.watering_backend.domain.exception.UpdateFailedException
 
 interface DeviceRepository {
-    fun insert(name: String): Either<InsertFailedException, DeviceEntity>
+    fun create(userId: Long, name: String): Either<InsertFailedException, Pair<DeviceEntity, SettingEntity>>
 
-    fun getById(id: UUID): Option<DeviceEntity>
+    fun update(id: Long, deviceForm: DeviceForm): Either<UpdateFailedException, Int>
 
-    fun getDevicesByMemberId(memberId: Long): List<DeviceEntity>
+    fun getById(id: Long): Option<DeviceEntity>
 
-    fun getCurrentDevice(memberId: Long): Option<DeviceEntity>
+    fun getDevicesByUserId(userId: Long): List<DeviceEntity>
+
+    fun getCurrentDevice(userId: Long): Option<DeviceEntity>
+
+    fun updateAndGet(id: Long, deviceForm: DeviceForm): Either<UpdateFailedException, DeviceEntity>
 }

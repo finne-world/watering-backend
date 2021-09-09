@@ -5,13 +5,11 @@ import arrow.core.getOrHandle
 import com.auth0.jwt.exceptions.TokenExpiredException
 import com.watering.watering_backend.domain.constant.Error
 import com.watering.watering_backend.domain.entity.AccessTokenEntity
-import com.watering.watering_backend.domain.entity.AuthorityEntity
 import com.watering.watering_backend.domain.exception.authentication.AuthenticationFailedException
 import com.watering.watering_backend.domain.service.AuthorityService
 import com.watering.watering_backend.domain.service.shared.AccessTokenSharedService
 import com.watering.watering_backend.lib.BearerTokenResolver
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -54,9 +52,8 @@ class JwtAuthenticationTokenFilter(
         }
 
         val userDetails: UserDetails = this.userDetailsService.loadUserByUsername(accessTokenEntity.subject)
-        val authorities: List<AuthorityEntity> = this.authorityService.getAuthoritiesByUsername(userDetails.username)
 
-        val authentication = UsernamePasswordAuthenticationToken(userDetails, null, authorities.map { SimpleGrantedAuthority("ROLE_${it.name}") }).also {
+        val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities).also {
             it.details = WebAuthenticationDetailsSource().buildDetails(request)
         }
         SecurityContextHolder.getContext().let { it.authentication = authentication }

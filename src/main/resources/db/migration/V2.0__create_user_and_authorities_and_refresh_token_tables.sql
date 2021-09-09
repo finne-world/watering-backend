@@ -13,7 +13,7 @@ CREATE TABLE authorities (
     updated_at DATETIME NOT NULL
 );
 
-CREATE TABLE user_discord_map (
+CREATE TABLE user_discord_maps (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id    BIGINT UNIQUE NOT NULL,
     discord_id BIGINT UNIQUE NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE user_discord_map (
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE TABLE user_authority_map (
+CREATE TABLE user_authority_maps (
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id      BIGINT NOT NULL,
     authority_id BIGINT NOT NULL,
