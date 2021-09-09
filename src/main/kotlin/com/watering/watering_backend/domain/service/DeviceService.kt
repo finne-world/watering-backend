@@ -1,13 +1,17 @@
 package com.watering.watering_backend.domain.service
 
-import com.watering.watering_backend.domain.service.dto.device.GetCurrentDeviceResult
-import com.watering.watering_backend.domain.service.dto.device.GetDevicesResult
+import com.watering.watering_backend.domain.entity.DeviceEntity
+import com.watering.watering_backend.domain.entity.form.DeviceForm
 import com.watering.watering_backend.domain.service.dto.device.RegisterDeviceResult
 
 interface DeviceService {
-    fun getDevices(memberId: Long): GetDevicesResult
+    fun getById(id: Long): DeviceEntity
 
-    fun registerDevice(memberId: Long, name: String): RegisterDeviceResult
+    fun getDevices(userId: Long): List<DeviceEntity>
 
-    fun getCurrentDevice(memberId: Long): GetCurrentDeviceResult
+    fun registerDevice(userId: Long, name: String): RegisterDeviceResult
+
+    fun updateDevice(deviceId: Long, deviceForm: DeviceForm): DeviceEntity
+
+    fun getCurrentDevice(userId: Long): DeviceEntity
 }

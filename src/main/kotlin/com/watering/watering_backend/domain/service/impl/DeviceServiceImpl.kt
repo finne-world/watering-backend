@@ -1,71 +1,103 @@
 package com.watering.watering_backend.domain.service.impl
 
 import arrow.core.getOrElse
-import com.watering.watering_backend.domain.entity.AutoWateringSettingEntity
+import arrow.core.getOrHandle
 import com.watering.watering_backend.domain.entity.DeviceEntity
-import com.watering.watering_backend.domain.entity.WateringSettingEntity
+import com.watering.watering_backend.domain.entity.form.DeviceForm
+import com.watering.watering_backend.domain.exception.application.MultipleApplicationException
 import com.watering.watering_backend.domain.exception.application.ResourceAlreadyExistsException
+import com.watering.watering_backend.domain.exception.application.ResourceCreateFailedException
 import com.watering.watering_backend.domain.exception.application.ResourceNotFoundException
-import com.watering.watering_backend.domain.repository.AutoWateringSettingRepository
+import com.watering.watering_backend.domain.exception.application.ResourceUpdateFailedException
 import com.watering.watering_backend.domain.repository.DeviceRepository
-import com.watering.watering_backend.domain.repository.MemberDeviceMapRepository
-import com.watering.watering_backend.domain.repository.WateringSettingRepository
 import com.watering.watering_backend.domain.service.DeviceService
-import com.watering.watering_backend.domain.service.dto.device.GetCurrentDeviceResult
-import com.watering.watering_backend.domain.service.dto.device.GetDevicesResult
 import com.watering.watering_backend.domain.service.dto.device.RegisterDeviceResult
-import com.watering.watering_backend.lib.extension.getOrThrow
 import com.watering.watering_backend.lib.extension.runIfTrue
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class DeviceServiceImpl(
-    private val deviceRepository: DeviceRepository,
-    private val memberDeviceMapRepository: MemberDeviceMapRepository,
-    private val wateringSettingRepository: WateringSettingRepository,
-    private val autoWateringSettingRepository: AutoWateringSettingRepository
+    private val deviceRepository: DeviceRepository
 ): DeviceService {
-    override fun getDevices(memberId: Long): GetDevicesResult = transaction {
-        val devices: List<DeviceEntity> = deviceRepository.getDevicesByMemberId(memberId)
-
-        GetDevicesResult(
-            devices = devices
-        )
+    @Transactional
+    override fun getById(id: Long): DeviceEntity {
+        this.deviceRepository.getById(id).getOrElse {
+            throw ResourceNotFoundException(
+                errorDescription = "the device with id [${id}] not found."
+            )
+        }
+        .also {
+            return it
+        }
     }
 
-    override fun registerDevice(memberId: Long, name: String): RegisterDeviceResult = transaction {
-        deviceRepository.getDevicesByMemberId(memberId).any {
+    @Transactional
+    override fun getDevices(userId: Long): List<DeviceEntity> {
+        return this.deviceRepository.getDevicesByUserId(userId)
+    }
+
+    @Transactional
+    override fun registerDevice(userId: Long, name: String): RegisterDeviceResult {
+        this.deviceRepository.getDevicesByUserId(userId).any {
             it.name == name
         }.runIfTrue {
             throw ResourceAlreadyExistsException(
-                errorDescription = "Already exists device. device_name=${name}."
+                errorDescription = "Already exists device with name [${name}].",
+                errorMessage = "Already exists device with name [${name}]. please choice another name."
             )
         }
 
-        val createdDevice: DeviceEntity = deviceRepository.insert(name).getOrThrow().also {
-            memberDeviceMapRepository.insert(memberId, it.id).getOrThrow()
+        this.deviceRepository.create(userId, name).getOrHandle {
+            throw ResourceCreateFailedException(
+                errorDescription = it.errorDescription,
+                errorMessage = "Failed to create device with name [${name}]. please wait a moment and try again."
+            )
         }
-        val createdWateringSetting: WateringSettingEntity = wateringSettingRepository.insert(createdDevice.id).getOrThrow()
-        val createdAutoWateringSetting: AutoWateringSettingEntity = autoWateringSettingRepository.insert(createdDevice.id).getOrThrow()
-
-        RegisterDeviceResult(
-            createdDevice = createdDevice,
-            createdWateringSetting = createdWateringSetting,
-            createdAutoWateringSetting = createdAutoWateringSetting
-        )
+        .also {
+            return RegisterDeviceResult(it.first, it.second)
+        }
     }
 
-    override fun getCurrentDevice(memberId: Long): GetCurrentDeviceResult = transaction {
-        val currentDevice: DeviceEntity = deviceRepository.getCurrentDevice(memberId).getOrElse {
+    @Transactional
+    override fun updateDevice(deviceId: Long, deviceForm: DeviceForm): DeviceEntity {
+        val device: DeviceEntity = this.deviceRepository.getById(deviceId).getOrElse {
             throw ResourceNotFoundException(
-                errorDescription = "current device not found. member_id=${memberId}.",
-                errorMessage = "the current device not configured. please request to [/api/devices/switch] first."
+                errorDescription = "the device with id [${deviceId}] not found."
             )
         }
 
-        GetCurrentDeviceResult(
-            device = currentDevice
-        )
+        deviceForm.getErrors(device).also {
+            if (it.isNotEmpty()) {
+                throw MultipleApplicationException(
+                    httpStatus = HttpStatus.BAD_REQUEST,
+                    errors = it
+                )
+            }
+        }
+
+        this.deviceRepository.updateAndGet(deviceId, deviceForm).getOrHandle {
+            throw ResourceUpdateFailedException(
+                errorDescription = it.errorDescription,
+                errorMessage = "failed to update device with id [${deviceId}]. please wait a moment and try again."
+            )
+        }
+        .also {
+            return it
+        }
+    }
+
+    @Transactional
+    override fun getCurrentDevice(userId: Long): DeviceEntity {
+        this.deviceRepository.getCurrentDevice(userId).getOrElse {
+            throw ResourceNotFoundException(
+                errorDescription = "the current device not found. user_id=${userId}.",
+                errorMessage = "the current device not configured. please request to [/api/user/${userId}/devices/switch] first."
+            )
+        }
+        .also {
+            return it
+        }
     }
 }

@@ -9,9 +9,9 @@ authentication:
     iss: develop.watering.work
     aud:
       - discordbot.watering.work
-    exp: 30
+    exp: 3600
   refresh-token:
-    exp: 15
+    exp: 84600
 
 aws:
   parameter-store:

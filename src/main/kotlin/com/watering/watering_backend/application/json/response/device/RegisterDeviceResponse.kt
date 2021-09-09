@@ -2,13 +2,13 @@ package com.watering.watering_backend.application.json.response.device
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.watering.watering_backend.application.json.response.OkResponse
-import com.watering.watering_backend.application.json.response.`object`.AutoWateringSetting
-import com.watering.watering_backend.application.json.response.`object`.WateringSetting
+import com.watering.watering_backend.application.json.response.`object`.Setting
 import java.util.UUID
 
-@JsonPropertyOrder("status_code", "timestamp", "device_id", "watering_setting", "auto_watering_setting")
+@JsonPropertyOrder("status_code", "timestamp", "id", "name", "uuid", "setting")
 class RegisterDeviceResponse(
-    val deviceId: UUID,
-    val wateringSetting: WateringSetting,
-    val autoWateringSetting: AutoWateringSetting
+    val id: Long,
+    val name: String,
+    val uuid: UUID,
+    val setting: Setting,
 ): OkResponse()

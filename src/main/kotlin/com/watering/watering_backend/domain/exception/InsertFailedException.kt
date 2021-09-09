@@ -1,7 +1,7 @@
 package com.watering.watering_backend.domain.exception
 
 class InsertFailedException(
-    errorDescription: String
+    val errorDescription: String
 ): RuntimeException(
     errorDescription
 )

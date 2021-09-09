@@ -16,5 +16,7 @@ const val exposedCore: String = "org.jetbrains.exposed:exposed-core:${Versions.D
 const val exposedDao: String = "org.jetbrains.exposed:exposed-dao:${Versions.Dependency.EXPOSED}"
 const val exposedJdbc: String = "org.jetbrains.exposed:exposed-jdbc:${Versions.Dependency.EXPOSED}"
 const val exposedJavaTime: String = "org.jetbrains.exposed:exposed-java-time:${Versions.Dependency.EXPOSED}"
+const val exposedSpringTransaction: String = "org.jetbrains.exposed:spring-transaction:${Versions.Dependency.EXPOSED}"
 const val javaJwt: String = "com.auth0:java-jwt:${Versions.Dependency.JAVA_JWT}"
 const val awsJavaSdkSsm: String = "com.amazonaws:aws-java-sdk-ssm:${Versions.Dependency.AWS_JAVA_SDK_SSM}"
+const val aspectjweaver: String = "org.aspectj:aspectjweaver:${Versions.Dependency.ASPECTJ_WEAVER}"

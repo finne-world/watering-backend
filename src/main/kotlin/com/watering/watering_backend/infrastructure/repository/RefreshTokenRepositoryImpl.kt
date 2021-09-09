@@ -34,7 +34,7 @@ class RefreshTokenRepositoryImpl: RefreshTokenRepository {
     }
 
     override fun updateToken(tokenId: Long, tokenUUID: UUID) {
-        return RefreshTokenTable.update({ RefreshTokenTable.id eq tokenId }) {
+        RefreshTokenTable.update({ RefreshTokenTable.id eq tokenId }) {
             it[this.token] = tokenUUID
         }.isPositive().runIf(false) {
             throw UpdateFailedException("Failed to update resource in table [refresh_tokens].")

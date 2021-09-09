@@ -35,8 +35,10 @@ dependencies {
 	implementation(exposedDao)
 	implementation(exposedJdbc)
 	implementation(exposedJavaTime)
+	implementation(exposedSpringTransaction)
 	implementation(javaJwt)
 	implementation(awsJavaSdkSsm)
+	implementation(aspectjweaver)
 }
 
 tasks.withType<KotlinCompile> {

@@ -2,9 +2,9 @@ package com.watering.watering_backend.domain.entity
 
 import java.time.LocalDateTime
 
-data class AuthorityEntity(
+class AuthorityEntity(
     val id: Long,
     val name: String,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
-)
+    createdAt: LocalDateTime,
+    updatedAt: LocalDateTime
+): TableBasedEntity(createdAt, updatedAt)
