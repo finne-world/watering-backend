@@ -36,7 +36,7 @@ class DeviceRepositoryImpl(
 ): DeviceRepository {
     override fun create(userId: Long, name: String): Either<InsertFailedException, Pair<DeviceEntity, SettingEntity>> {
         val createdDevice: DeviceEntity = DeviceTable.insert {
-            it[this.uuid] = UUID.randomUUID()
+            it[this.serial] = UUID.randomUUID()
             it[this.name] = name
             it[this.userId] = userId
         }
@@ -129,6 +129,16 @@ class DeviceRepositoryImpl(
         }
         this.getById(id).also {
             return it.get().right()
+        }
+    }
+
+    override fun getDevicesBySerials(serials: List<UUID>): List<DeviceEntity> {
+        DeviceTable.select {
+            DeviceTable.serial inList serials
+        }
+        .map(DeviceTable::toEntity)
+        .also {
+            return it
         }
     }
 }

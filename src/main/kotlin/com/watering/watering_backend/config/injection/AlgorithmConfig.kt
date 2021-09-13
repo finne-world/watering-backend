@@ -3,7 +3,7 @@ package com.watering.watering_backend.config.injection
 import com.amazonaws.util.Base64
 import com.auth0.jwt.algorithms.Algorithm
 import com.watering.watering_backend.config.property.AWSProperties
-import com.watering.watering_backend.lib.AWSParameterStore
+import com.watering.watering_backend.lib.aws.AWSParameterStore
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.security.KeyFactory

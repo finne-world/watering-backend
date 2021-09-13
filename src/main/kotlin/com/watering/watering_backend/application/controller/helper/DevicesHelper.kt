@@ -8,8 +8,8 @@ import com.watering.watering_backend.domain.entity.form.DeviceForm
 fun convertTo(entity: DeviceEntity): Device {
     return Device(
         id = entity.id,
+        serial = entity.serial,
         name = entity.name,
-        uuid = entity.uuid,
         current = entity.current
     )
 }
@@ -17,7 +17,7 @@ fun convertTo(entity: DeviceEntity): Device {
 fun UpdateDeviceRequest.convertToForm(): DeviceForm {
     return DeviceForm(
         this.id,
-        this.uuid,
+        this.serial,
         this.userId,
         this.name,
         this.current

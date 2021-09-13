@@ -17,5 +17,6 @@ object Versions {
         const val JAVA_JWT: String = "3.18.1"
         const val AWS_JAVA_SDK_SSM: String = "1.12.31"
         const val ASPECTJ_WEAVER: String = "1.9.7"
+        const val AWS_JAVA_SDK_SQS: String = "1.12.64"
     }
 }

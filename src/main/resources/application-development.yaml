@@ -18,3 +18,8 @@ aws:
     jwt:
       public-key: /develop/jwt/public_key
       private-key: /develop/jwt/private_key
+  sqs:
+    wait-time-seconds: 20
+    max-number-of-messages: 10
+    queues:
+      test-url: https://sqs.ap-northeast-1.amazonaws.com/417172458195/Test

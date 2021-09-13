@@ -1,6 +1,6 @@
 CREATE TABLE devices (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    uuid       BINARY(16) UNIQUE NOT NULL,
+    serial     BINARY(16) UNIQUE NOT NULL,
     user_id    BIGINT NOT NULL,
     name       VARCHAR(255) NOT NULL,
     created_at DATETIME NOT NULL,

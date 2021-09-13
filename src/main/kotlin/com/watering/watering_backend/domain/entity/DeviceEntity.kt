@@ -5,7 +5,7 @@ import java.util.UUID
 
 class DeviceEntity(
     val id: Long,
-    val uuid: UUID,
+    val serial: UUID,
     val userId: Long,
     val name: String,
     val current: Boolean,

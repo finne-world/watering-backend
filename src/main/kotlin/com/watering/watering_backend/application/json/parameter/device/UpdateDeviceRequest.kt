@@ -6,13 +6,13 @@ import java.util.UUID
 data class UpdateDeviceRequest
 @ConstructorProperties(
     "id",
-    "uuid",
+    "serial",
     "user_id",
     "name",
     "current"
 ) constructor (
     val id: Long?,
-    val uuid: UUID?,
+    val serial: UUID?,
     val userId: Long?,
     val name: String?,
     val current: Boolean?
