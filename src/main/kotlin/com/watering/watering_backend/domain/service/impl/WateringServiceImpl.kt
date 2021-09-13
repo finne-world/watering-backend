@@ -34,7 +34,7 @@ class WateringServiceImpl(
 
         messages.convertTo(
             converter = { message: Message ->
-                this.objectMapper.readValue(message.body.also { println(it) }, WateringHistoryMessage::class.java)
+                this.objectMapper.readValue(message.body, WateringHistoryMessage::class.java)
             },
             onFailed = {
                 when (it) {
