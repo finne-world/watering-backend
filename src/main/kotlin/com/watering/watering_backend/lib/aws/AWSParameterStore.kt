@@ -1,4 +1,4 @@
-package com.watering.watering_backend.lib
+package com.watering.watering_backend.lib.aws
 
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest

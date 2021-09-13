@@ -17,6 +17,7 @@ object AutomationSettingTable: LongIdTable(name = "automation_settings") {
     fun toEntity(resultRow: ResultRow): AutomationSettingEntity {
         return AutomationSettingEntity(
             resultRow[id].value,
+            resultRow[deviceId].value,
             resultRow[enabled],
             resultRow.getOrNull(interval),
             resultRow[createdAt],

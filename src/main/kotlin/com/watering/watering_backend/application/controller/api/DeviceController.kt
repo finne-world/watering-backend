@@ -54,8 +54,8 @@ class DeviceController(
 
         return RegisterDeviceResponse(
             id = createdDevice.id,
+            serial = createdDevice.serial,
             name = createdDevice.name,
-            uuid = createdDevice.uuid,
             setting = convertTo(createdSetting)
         )
     }

@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.`java-time`.datetime
 import java.time.LocalDateTime
 
 object DeviceTable: LongIdTable("devices") {
-    val uuid = uuid("uuid")
+    val serial = uuid("serial")
     val name = varchar("name", 255)
     val userId = long("user_id")
     val current = bool("current").default(false)
@@ -19,7 +19,7 @@ object DeviceTable: LongIdTable("devices") {
     fun toEntity(deviceRow: ResultRow): DeviceEntity {
         return DeviceEntity(
             deviceRow[id].value,
-            deviceRow[uuid],
+            deviceRow[serial],
             deviceRow[userId],
             deviceRow[name],
             deviceRow[current],

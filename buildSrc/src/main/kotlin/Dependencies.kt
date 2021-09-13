@@ -20,3 +20,4 @@ const val exposedSpringTransaction: String = "org.jetbrains.exposed:spring-trans
 const val javaJwt: String = "com.auth0:java-jwt:${Versions.Dependency.JAVA_JWT}"
 const val awsJavaSdkSsm: String = "com.amazonaws:aws-java-sdk-ssm:${Versions.Dependency.AWS_JAVA_SDK_SSM}"
 const val aspectjweaver: String = "org.aspectj:aspectjweaver:${Versions.Dependency.ASPECTJ_WEAVER}"
+const val awsJavaSdkSqs: String = "com.amazonaws:aws-java-sdk-sqs:${Versions.Dependency.AWS_JAVA_SDK_SQS}"

@@ -7,6 +7,7 @@ import com.watering.watering_backend.domain.entity.SettingEntity
 import com.watering.watering_backend.domain.entity.form.DeviceForm
 import com.watering.watering_backend.domain.exception.InsertFailedException
 import com.watering.watering_backend.domain.exception.UpdateFailedException
+import java.util.UUID
 
 interface DeviceRepository {
     fun create(userId: Long, name: String): Either<InsertFailedException, Pair<DeviceEntity, SettingEntity>>
@@ -20,4 +21,6 @@ interface DeviceRepository {
     fun getCurrentDevice(userId: Long): Option<DeviceEntity>
 
     fun updateAndGet(id: Long, deviceForm: DeviceForm): Either<UpdateFailedException, DeviceEntity>
+
+    fun getDevicesBySerials(serials: List<UUID>): List<DeviceEntity>
 }

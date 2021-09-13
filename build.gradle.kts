@@ -39,6 +39,7 @@ dependencies {
 	implementation(javaJwt)
 	implementation(awsJavaSdkSsm)
 	implementation(aspectjweaver)
+	implementation(awsJavaSdkSqs)
 }
 
 tasks.withType<KotlinCompile> {
