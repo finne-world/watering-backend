@@ -15,6 +15,7 @@ class QueueUrlResolverImpl(
     override fun resolve(type: MessageType): String {
         return when (type) {
             MessageType.WATERING_HISTORY -> this.awsProperties.sqs.queues.wateringHistory
+            MessageType.TEMPERATURE_HISTORY -> this.awsProperties.sqs.queues.temperatureHistory
             MessageType.HUMIDITY_HISTORY -> this.awsProperties.sqs.queues.humidityHistory
         }
     }
