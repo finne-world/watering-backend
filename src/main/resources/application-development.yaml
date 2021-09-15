@@ -22,4 +22,6 @@ aws:
     wait-time-seconds: 20
     max-number-of-messages: 10
     queues:
-      test-url: https://sqs.ap-northeast-1.amazonaws.com/417172458195/Test
+      watering-history: https://sqs.ap-northeast-1.amazonaws.com/417172458195/watering_develop_watering_histories
+      temperature-history: https://sqs.ap-northeast-1.amazonaws.com/417172458195/watering_develop_temperature_histories
+      humidity-history: https://sqs.ap-northeast-1.amazonaws.com/417172458195/watering_develop_humidity_histories

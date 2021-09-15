@@ -4,7 +4,7 @@ import java.beans.ConstructorProperties
 import java.time.LocalDateTime
 import java.util.UUID
 
-class WateringHistoryMessage
+class TemperatureHistoryMessage
 @ConstructorProperties(
     "serial",
     "timestamp",
@@ -12,7 +12,7 @@ class WateringHistoryMessage
 ) constructor(
     serial: UUID,
     timestamp: LocalDateTime,
-    val value: Int,
+    val value: Float
 ): PublishedDeviceMessage(
     serial,
     timestamp

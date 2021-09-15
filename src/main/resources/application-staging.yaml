@@ -18,3 +18,10 @@ aws:
     jwt:
       public-key: /staging/jwt/public_key
       private-key: /staging/jwt/private_key
+  sqs:
+    wait-time-seconds: 20
+    max-number-of-messages: 10
+    queues:
+      watering-history: https://sqs.ap-northeast-1.amazonaws.com/417172458195/watering_staging_watering_histories
+      temperature-history: https://sqs.ap-northeast-1.amazonaws.com/417172458195/watering_staging_temperature_histories
+      humidity-history: https://sqs.ap-northeast-1.amazonaws.com/417172458195/watering_staging_humidity_histories
