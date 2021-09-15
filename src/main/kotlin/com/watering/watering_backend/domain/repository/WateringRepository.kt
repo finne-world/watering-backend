@@ -4,6 +4,6 @@ import com.watering.watering_backend.domain.entity.DeviceEntity
 import com.watering.watering_backend.domain.entity.WateringHistoryEntity
 import com.watering.watering_backend.domain.message.WateringHistoryMessage
 
-interface WateringHistoryRepository {
-    fun saveHistories(histories: List<Pair<WateringHistoryMessage, DeviceEntity>>): List<WateringHistoryEntity>
+interface WateringRepository {
+    fun saveHistories(histories: List<Pair<DeviceEntity, WateringHistoryMessage>>): List<WateringHistoryEntity>
 }

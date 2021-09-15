@@ -6,10 +6,10 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.watering.watering_backend.domain.constant.MessageType
 import com.watering.watering_backend.domain.entity.DeviceEntity
-import com.watering.watering_backend.domain.message.WateringHistoryMessage
+import com.watering.watering_backend.domain.message.HumidityHistoryMessage
 import com.watering.watering_backend.domain.repository.DeviceRepository
-import com.watering.watering_backend.domain.repository.WateringRepository
-import com.watering.watering_backend.domain.service.WateringService
+import com.watering.watering_backend.domain.repository.HumidityRepository
+import com.watering.watering_backend.domain.service.HumidityService
 import com.watering.watering_backend.lib.QueueUrlResolver
 import com.watering.watering_backend.lib.aws.AmazonSQS
 import com.watering.watering_backend.lib.extension.convertTo
@@ -18,23 +18,23 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class WateringServiceImpl(
+class HumidityServiceImpl(
     private val logger: Logger,
-    private val queueUrlResolver: QueueUrlResolver,
     private val amazonSQS: AmazonSQS,
     private val objectMapper: ObjectMapper,
+    private val queueUrlResolver: QueueUrlResolver,
     private val deviceRepository: DeviceRepository,
-    private val wateringRepository: WateringRepository,
-): WateringService {
+    private val humidityRepository: HumidityRepository
+): HumidityService {
+    //TODO: 共通化したい
     @Transactional
-    //TODO: どうにか共通化できないだろうか
     override fun receiveHistoryMessages() {
-        val queueUrl: String = this.queueUrlResolver.resolve(MessageType.WATERING_HISTORY).also { println(it) }
+        val queueUrl: String = this.queueUrlResolver.resolve(MessageType.HUMIDITY_HISTORY).also { println(it) }
         val sqsMessages: List<Message> = this.amazonSQS.receiveMessages(queueUrl).let { it.messages }
 
         sqsMessages.convertTo(
             converter = { message: Message ->
-                this.objectMapper.readValue(message.body, WateringHistoryMessage::class.java)
+                this.objectMapper.readValue(message.body, HumidityHistoryMessage::class.java)
             },
             onFailed = {
                 when (it) {
@@ -44,18 +44,18 @@ class WateringServiceImpl(
                 }
             }
         )
-        .let { messages: List<WateringHistoryMessage> ->
+        .let { messages: List<HumidityHistoryMessage> ->
             this.deviceRepository.getDevicesBySerials(
                 messages.map { it.serial }
             )
             .let { devices: List<DeviceEntity> ->
-                messages.map { message: WateringHistoryMessage->
+                messages.map { message: HumidityHistoryMessage ->
                     Pair(devices.first { it.serial == message.serial }, message)
                 }
             }
         }
         .also {
-            this.wateringRepository.saveHistories(it)
+            this.humidityRepository.saveHistories(it)
         }
 
         sqsMessages.forEach { message ->

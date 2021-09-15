@@ -26,5 +26,7 @@ data class SqsProperties(
 )
 
 data class QueuesProperties(
-    val testUrl: String
+    val testUrl: String,
+    val wateringHistory: String
+    val humidityHistory: String
 )

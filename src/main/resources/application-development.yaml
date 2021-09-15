@@ -23,3 +23,5 @@ aws:
     max-number-of-messages: 10
     queues:
       test-url: https://sqs.ap-northeast-1.amazonaws.com/417172458195/Test
+      watering-history:
+      humidity-history: https://sqs.ap-northeast-1.amazonaws.com/417172458195/watering_develop_humidity_histories
