@@ -29,7 +29,7 @@ class HumidityServiceImpl(
     //TODO: 共通化したい
     @Transactional
     override fun receiveHistoryMessages() {
-        val queueUrl: String = this.queueUrlResolver.resolve(MessageType.HUMIDITY_HISTORY).also { println(it) }
+        val queueUrl: String = this.queueUrlResolver.resolve(MessageType.HUMIDITY_HISTORY)
         val sqsMessages: List<Message> = this.amazonSQS.receiveMessages(queueUrl).let { it.messages }
 
         sqsMessages.convertTo(

@@ -29,7 +29,7 @@ class WateringServiceImpl(
     @Transactional
     //TODO: どうにか共通化できないだろうか
     override fun receiveHistoryMessages() {
-        val queueUrl: String = this.queueUrlResolver.resolve(MessageType.WATERING_HISTORY).also { println(it) }
+        val queueUrl: String = this.queueUrlResolver.resolve(MessageType.WATERING_HISTORY)
         val sqsMessages: List<Message> = this.amazonSQS.receiveMessages(queueUrl).let { it.messages }
 
         sqsMessages.convertTo(
