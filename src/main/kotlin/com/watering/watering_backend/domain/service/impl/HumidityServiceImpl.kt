@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.watering.watering_backend.domain.constant.MessageType
 import com.watering.watering_backend.domain.entity.DeviceEntity
+import com.watering.watering_backend.domain.entity.HumidityHistoryEntity
 import com.watering.watering_backend.domain.message.HumidityHistoryMessage
 import com.watering.watering_backend.domain.repository.DeviceRepository
 import com.watering.watering_backend.domain.repository.HumidityRepository
@@ -63,5 +64,10 @@ class HumidityServiceImpl(
                 this.logger.info("delete message from AmazonSQS. message_id: ${message.messageId}")
             }
         }
+    }
+
+    @Transactional
+    override fun getHistories(deviceId: Long, limit: Int): List<HumidityHistoryEntity> {
+        return this.humidityRepository.getHistories(deviceId, limit)
     }
 }

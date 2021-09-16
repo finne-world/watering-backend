@@ -1,11 +1,14 @@
 package com.watering.watering_backend.application.controller.api
 
 import com.watering.watering_backend.application.controller.helper.convertTo
+import com.watering.watering_backend.application.json.response.history.HumidityHistoryResponse
 import com.watering.watering_backend.application.json.response.history.TemperatureHistoryResponse
 import com.watering.watering_backend.application.json.response.history.WateringHistoryResponse
 import com.watering.watering_backend.domain.annotation.aspect.CombinationOfUserAndDevice
+import com.watering.watering_backend.domain.entity.HumidityHistoryEntity
 import com.watering.watering_backend.domain.entity.TemperatureHistoryEntity
 import com.watering.watering_backend.domain.entity.WateringHistoryEntity
+import com.watering.watering_backend.domain.service.HumidityService
 import com.watering.watering_backend.domain.service.TemperatureService
 import com.watering.watering_backend.domain.service.WateringService
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController
 @CombinationOfUserAndDevice
 class HistoryController(
     private val wateringService: WateringService,
-    private val temperatureService: TemperatureService
+    private val temperatureService: TemperatureService,
+    private val humidityService: HumidityService
 ) {
     @GetMapping("watering")
     fun getWateringHistories(
@@ -47,6 +51,20 @@ class HistoryController(
         return TemperatureHistoryResponse(
             deviceId = deviceId,
             histories = temperatureHistories.map(::convertTo)
+        )
+    }
+
+    @GetMapping("humidity")
+    fun getHumidityHistories(
+        @PathVariable("user_id") userId: Long,
+        @PathVariable("device_id") deviceId: Long,
+        @RequestParam(name = "limit", required = false) limit: Int = 15
+    ): HumidityHistoryResponse {
+        val humidityHistories: List<HumidityHistoryEntity> = this.humidityService.getHistories(deviceId, limit)
+
+        return HumidityHistoryResponse(
+            deviceId = deviceId,
+            histories = humidityHistories.map(::convertTo)
         )
     }
 }
