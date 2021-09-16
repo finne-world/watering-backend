@@ -15,12 +15,12 @@ object UserTable: LongIdTable(name = "users") {
 
     fun toEntity(userRow: ResultRow, authorities: List<AuthorityEntity>): UserEntity {
         return UserEntity(
-            userRow[id].value,
-            userRow[username],
-            userRow[password],
-            authorities,
-            userRow[createdAt],
-            userRow[updatedAt]
+            id = userRow[id].value,
+            username = userRow[username],
+            password = userRow[password],
+            authorities = authorities,
+            createdAt = userRow[createdAt],
+            updatedAt = userRow[updatedAt]
         )
     }
 }

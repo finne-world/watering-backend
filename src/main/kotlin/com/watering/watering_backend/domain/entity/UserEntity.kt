@@ -7,6 +7,7 @@ class UserEntity(
     val username: String,
     val password: String,
     val authorities: List<AuthorityEntity>,
+    val discordId: Long? = null,
     createdAt: LocalDateTime,
     updatedAt: LocalDateTime
 ): TableBasedEntity(createdAt, updatedAt)

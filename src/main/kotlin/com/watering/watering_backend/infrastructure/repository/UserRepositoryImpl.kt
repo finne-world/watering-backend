@@ -10,16 +10,20 @@ import arrow.core.right
 import arrow.core.toOption
 import com.watering.watering_backend.domain.entity.AuthorityEntity
 import com.watering.watering_backend.domain.entity.UserEntity
+import com.watering.watering_backend.domain.entity.filter.UserFilter
 import com.watering.watering_backend.domain.exception.InsertFailedException
 import com.watering.watering_backend.domain.repository.UserRepository
 import com.watering.watering_backend.infrastructure.table.AuthorityTable
 import com.watering.watering_backend.infrastructure.table.UserAuthorityMapTable
+import com.watering.watering_backend.infrastructure.table.UserDiscordMapTable
 import com.watering.watering_backend.infrastructure.table.UserTable
 import com.watering.watering_backend.lib.extension.insert
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
+import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -70,5 +74,30 @@ class UserRepositoryImpl: UserRepository {
 
     override fun existsByUsername(username: String): Boolean {
         return UserTable.select { UserTable.username eq username }.count() > 0
+    }
+
+    override fun getUsersByFilter(filter: UserFilter): List<UserEntity> {
+        UserTable.selectAll().also { query ->
+            filter.name?.also {
+                query.andWhere { UserTable.username like it }
+            }
+            filter.discordId?.also {
+                query.andWhere { UserDiscordMapTable.discordId eq it }
+            }
+        }
+        .toList()
+        .let { resultRows ->
+            val authorityRows: List<ResultRow> = (AuthorityTable innerJoin UserAuthorityMapTable).select {
+                UserAuthorityMapTable.userId inList resultRows.map { it[UserTable.id] }
+            }
+            .toList()
+
+            resultRows.map { resultRow ->
+                UserTable.toEntity(resultRow, authorityRows.filter { it[UserAuthorityMapTable.userId] == resultRow[UserTable.id] }.map(AuthorityTable::toEntity))
+            }
+        }
+        .also {
+            return it
+        }
     }
 }
