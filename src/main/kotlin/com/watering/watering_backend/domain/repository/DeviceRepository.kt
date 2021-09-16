@@ -4,6 +4,7 @@ import arrow.core.Either
 import arrow.core.Option
 import com.watering.watering_backend.domain.entity.DeviceEntity
 import com.watering.watering_backend.domain.entity.SettingEntity
+import com.watering.watering_backend.domain.entity.filter.DeviceFilter
 import com.watering.watering_backend.domain.entity.form.DeviceForm
 import com.watering.watering_backend.domain.exception.InsertFailedException
 import com.watering.watering_backend.domain.exception.UpdateFailedException
@@ -16,7 +17,7 @@ interface DeviceRepository {
 
     fun getById(id: Long): Option<DeviceEntity>
 
-    fun getDevicesByUserId(userId: Long): List<DeviceEntity>
+    fun getDevicesByUserId(userId: Long, filter: DeviceFilter = DeviceFilter()): List<DeviceEntity>
 
     fun getCurrentDevice(userId: Long): Option<DeviceEntity>
 

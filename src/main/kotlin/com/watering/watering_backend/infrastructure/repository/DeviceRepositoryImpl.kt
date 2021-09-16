@@ -11,6 +11,7 @@ import arrow.core.right
 import arrow.core.toOption
 import com.watering.watering_backend.domain.entity.DeviceEntity
 import com.watering.watering_backend.domain.entity.SettingEntity
+import com.watering.watering_backend.domain.entity.filter.DeviceFilter
 import com.watering.watering_backend.domain.entity.form.DeviceForm
 import com.watering.watering_backend.domain.exception.InsertFailedException
 import com.watering.watering_backend.domain.exception.UpdateFailedException
@@ -23,6 +24,7 @@ import com.watering.watering_backend.lib.extension.ifNegative
 import com.watering.watering_backend.lib.extension.insert
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
+import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
@@ -101,15 +103,22 @@ class DeviceRepositoryImpl(
             }
     }
 
-    override fun getDevicesByUserId(userId: Long): List<DeviceEntity> {
-        (DeviceTable innerJoin SettingTable innerJoin AutomationSettingTable)
-            .selectAll()
-            .map {
-                DeviceTable.toEntity(it)
+    override fun getDevicesByUserId(userId: Long, filter: DeviceFilter): List<DeviceEntity> {
+        DeviceTable.selectAll().also { query ->
+            filter.id?.also {
+                query.andWhere { DeviceTable.id eq it }
             }
-            .also {
-                return it
+            filter.serial?.also {
+                query.andWhere { DeviceTable.serial eq it }
             }
+            filter.name?.also {
+                query.andWhere { DeviceTable.name like it }
+            }
+        }
+        .map(DeviceTable::toEntity)
+        .also {
+            return it
+        }
     }
 
     override fun getCurrentDevice(userId: Long): Option<DeviceEntity> {

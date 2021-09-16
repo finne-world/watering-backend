@@ -38,7 +38,6 @@ class UserRepositoryImpl: UserRepository {
             return InsertFailedException("Failed to create resource [${UserTable.tableName}].").left()
         }
 
-
         authorities.forEach { authority ->
             UserAuthorityMapTable.insert {
                 it[this.userId] = createdUserRow[UserTable.id]

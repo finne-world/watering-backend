@@ -3,6 +3,7 @@ package com.watering.watering_backend.domain.service.impl
 import arrow.core.getOrElse
 import arrow.core.getOrHandle
 import com.watering.watering_backend.domain.entity.DeviceEntity
+import com.watering.watering_backend.domain.entity.filter.DeviceFilter
 import com.watering.watering_backend.domain.entity.form.DeviceForm
 import com.watering.watering_backend.domain.exception.application.MultipleApplicationException
 import com.watering.watering_backend.domain.exception.application.ResourceAlreadyExistsException
@@ -34,8 +35,8 @@ class DeviceServiceImpl(
     }
 
     @Transactional
-    override fun getDevices(userId: Long): List<DeviceEntity> {
-        return this.deviceRepository.getDevicesByUserId(userId)
+    override fun getDevices(userId: Long, filter: DeviceFilter): List<DeviceEntity> {
+        return this.deviceRepository.getDevicesByUserId(userId, filter)
     }
 
     @Transactional
