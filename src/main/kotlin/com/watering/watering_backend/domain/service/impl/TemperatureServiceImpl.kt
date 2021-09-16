@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.watering.watering_backend.domain.constant.MessageType
 import com.watering.watering_backend.domain.entity.DeviceEntity
+import com.watering.watering_backend.domain.entity.TemperatureHistoryEntity
 import com.watering.watering_backend.domain.message.TemperatureHistoryMessage
 import com.watering.watering_backend.domain.repository.DeviceRepository
 import com.watering.watering_backend.domain.repository.TemperatureRepository
@@ -62,5 +63,10 @@ class TemperatureServiceImpl(
                 this.logger.info("delete message from AmazonSQS. message_id: ${message.messageId}")
             }
         }
+    }
+
+    @Transactional
+    override fun getHistories(deviceId: Long, limit: Int): List<TemperatureHistoryEntity> {
+        return this.temperatureRepository.getHistories(deviceId, limit)
     }
 }
