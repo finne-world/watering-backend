@@ -5,7 +5,9 @@ import com.watering.watering_backend.domain.entity.TemperatureHistoryEntity
 import com.watering.watering_backend.domain.message.TemperatureHistoryMessage
 import com.watering.watering_backend.domain.repository.TemperatureRepository
 import com.watering.watering_backend.infrastructure.table.TemperatureHistoryTable
+import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.select
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -20,6 +22,18 @@ class TemperatureRepositoryImpl: TemperatureRepository {
             this[TemperatureHistoryTable.value] = message.value
             this[TemperatureHistoryTable.timestamp] = message.timestamp
         }
+        .map(TemperatureHistoryTable::toEntity)
+        .also {
+            return it
+        }
+    }
+
+    override fun getHistories(deviceId: Long, limit: Int): List<TemperatureHistoryEntity> {
+        TemperatureHistoryTable.select {
+            TemperatureHistoryTable.deviceId eq deviceId
+        }
+        .limit(limit)
+        .orderBy(TemperatureHistoryTable.timestamp, SortOrder.DESC)
         .map(TemperatureHistoryTable::toEntity)
         .also {
             return it
