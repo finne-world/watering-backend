@@ -1,7 +1,9 @@
 package com.watering.watering_backend.application.controller.api
 
 import com.watering.watering_backend.application.controller.helper.convertTo
+import com.watering.watering_backend.application.controller.helper.convertToFilter
 import com.watering.watering_backend.application.controller.helper.convertToForm
+import com.watering.watering_backend.application.json.param.GetDevicesFilterParams
 import com.watering.watering_backend.application.json.parameter.device.RegisterDeviceRequest
 import com.watering.watering_backend.application.json.parameter.device.UpdateDeviceRequest
 import com.watering.watering_backend.application.json.response.device.RegisterDeviceResponse
@@ -14,11 +16,13 @@ import com.watering.watering_backend.domain.entity.DeviceEntity
 import com.watering.watering_backend.domain.entity.SettingEntity
 import org.slf4j.Logger
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 //TODO: とりあえずバージョニングはしない
@@ -31,8 +35,9 @@ class DeviceController(
     @GetMapping
     fun get(
         @PathVariable("user_id") userId: Long,
+        @ModelAttribute filterParams: GetDevicesFilterParams
     ): GetDevicesResponse {
-        val devices: List<DeviceEntity> = this.deviceService.getDevices(userId)
+        val devices: List<DeviceEntity> = this.deviceService.getDevices(userId, filterParams.convertToFilter())
 
         return GetDevicesResponse(
             userId = userId,
