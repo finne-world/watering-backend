@@ -6,4 +6,6 @@ import com.watering.watering_backend.domain.message.HumidityHistoryMessage
 
 interface HumidityRepository {
     fun saveHistories(histories: List<Pair<DeviceEntity, HumidityHistoryMessage>>): List<HumidityHistoryEntity>
+
+    fun getHistories(deviceId: Long, limit: Int): List<HumidityHistoryEntity>
 }
