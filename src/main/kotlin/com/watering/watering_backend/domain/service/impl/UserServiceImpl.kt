@@ -2,6 +2,7 @@ package com.watering.watering_backend.domain.service.impl
 
 import arrow.core.getOrElse
 import com.watering.watering_backend.domain.entity.UserEntity
+import com.watering.watering_backend.domain.entity.filter.UserFilter
 import com.watering.watering_backend.domain.exception.application.ResourceNotFoundException
 import com.watering.watering_backend.domain.repository.UserRepository
 import com.watering.watering_backend.domain.service.UserService
@@ -22,5 +23,10 @@ class UserServiceImpl(
         }.also {
             return it
         }
+    }
+
+    @Transactional
+    override fun getUsers(filter: UserFilter): List<UserEntity> {
+        return this.userRepository.getUsersByFilter(filter)
     }
 }
