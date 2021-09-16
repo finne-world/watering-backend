@@ -50,6 +50,7 @@ class MultiHttpSecurityConfig {
     class ViewWebSecurityConfigurerAdapter: WebSecurityConfigurerAdapter() {
         override fun configure(http: HttpSecurity) {
             http.authorizeRequests()
+                .antMatchers("/front/users/create").permitAll()
                 .antMatchers("/**").hasRole(Authority.USER.name)
                 .antMatchers("/admin/**").hasRole(Authority.ADMIN.name)
                 .antMatchers("/").permitAll()

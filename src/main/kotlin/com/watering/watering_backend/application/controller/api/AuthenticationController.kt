@@ -12,6 +12,7 @@ import com.watering.watering_backend.domain.entity.AuthorityEntity
 import com.watering.watering_backend.domain.entity.RefreshTokenEntity
 import com.watering.watering_backend.domain.entity.UserEntity
 import com.watering.watering_backend.domain.service.ApiAuthenticationService
+import com.watering.watering_backend.domain.service.UserService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,7 +22,8 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/api/authentication")
 class AuthenticationController(
-    private val apiAuthenticationService: ApiAuthenticationService
+    private val apiAuthenticationService: ApiAuthenticationService,
+    private val userService: UserService
 ) {
     @PostMapping("signin")
     fun signin(@RequestBody signinRequest: SigninRequest): SigninResponse {
@@ -46,7 +48,7 @@ class AuthenticationController(
     fun signup(@RequestBody signupRequest: SignupRequest): SignupResponse {
         val (userEntity,
              authorities: List<AuthorityEntity>
-        ) = this.apiAuthenticationService.registerUser(
+        ) = this.userService.registerUser(
             signupRequest.username,
             signupRequest.password,
             signupRequest.authorities
