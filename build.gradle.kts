@@ -40,6 +40,7 @@ dependencies {
 	implementation(awsJavaSdkSsm)
 	implementation(aspectjweaver)
 	implementation(awsJavaSdkSqs)
+	implementation(bootstrap)
 }
 
 tasks.withType<KotlinCompile> {

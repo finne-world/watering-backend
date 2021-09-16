@@ -1,9 +1,9 @@
-package com.watering.watering_backend.domain.service.dto.authentication
+package com.watering.watering_backend.domain.service.dto.user
 
 import com.watering.watering_backend.domain.entity.AuthorityEntity
 import com.watering.watering_backend.domain.entity.UserEntity
 
-data class ApiRegisterUserResult(
+data class RegisterUserResult(
     val userEntity: UserEntity,
     val authorities: List<AuthorityEntity>
 )
