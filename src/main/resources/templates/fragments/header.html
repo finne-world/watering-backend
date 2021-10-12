@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<body>
+<header th:fragment="header(page)">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-primary sticky-top">
+    <a class="navbar-brand ms-sm-5 ms-3" href="#">Watering</a>
+    <button class="navbar-toggler me-3" type="button" data-toggle="collapse" data-target="#navbarNav4" aria-controls="navbarNav4" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end">
+      <ul class="navbar-nav me-5">
+        <li class="nav-item active">
+          <a th:href="@{/front/users/signup}" class="nav-link" th:classappend="${page == 'signup'} ? 'active'">サインアップ</a>
+        </li>
+        <li class="nav-item">
+          <a th:href="@{/front/users/signin}" class="nav-link" th:classappend="${page == 'signin'} ? 'active'">サインイン</a>
+        </li>
+        <li class="nav-item">
+          <a th:href="@{#}" class="nav-link" th:classappend="${page == ''} ? 'active'">Watering とは？</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+</body>
+</html>

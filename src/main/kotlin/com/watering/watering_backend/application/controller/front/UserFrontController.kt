@@ -1,6 +1,7 @@
 package com.watering.watering_backend.application.controller.front
 
 import com.watering.watering_backend.domain.constant.TemplateMapping
+import com.watering.watering_backend.domain.entity.form.SigninForm
 import com.watering.watering_backend.domain.entity.form.UserForm
 import com.watering.watering_backend.domain.service.UserService
 import org.springframework.stereotype.Controller
@@ -11,34 +12,31 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
 @RequestMapping("/front/users")
 class UserFrontController(
     private val userService: UserService
 ) {
-    @GetMapping("create")
+    @GetMapping("signup")
     fun getCreate(
         @ModelAttribute
-        userForm: UserForm = UserForm(),
+        userForm: UserForm,
         model: Model
     ): String {
-        model.addAttribute("userForm", userForm)
         return TemplateMapping.USER_CREATE.value
     }
 
-    @PostMapping("create")
+    @PostMapping("signup")
     fun postCreate(
         @Validated
         @ModelAttribute
         userForm: UserForm,
         bindingResult: BindingResult,
-        redirectAttributes: RedirectAttributes
     ): String {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("userForm", userForm)
-            return TemplateMapping.USER_CREATE.redirect()
+            return TemplateMapping.USER_CREATE.value
         }
 
         this.userService.registerUser(
@@ -48,5 +46,17 @@ class UserFrontController(
         )
 
         return TemplateMapping.USER_CREATE_COMPLETED.value
+    }
+
+    @GetMapping("signin")
+    fun getSignin(
+        @ModelAttribute
+        signinForm: SigninForm,
+        @RequestParam("failed", required = false)
+        failed: Boolean,
+        model: Model
+    ): String {
+        model.addAttribute("isFailed", failed)
+        return TemplateMapping.USER_SIGNIN.value
     }
 }

@@ -41,6 +41,7 @@ dependencies {
 	implementation(aspectjweaver)
 	implementation(awsJavaSdkSqs)
 	implementation(bootstrap)
+	implementation(jquery)
 }
 
 tasks.withType<KotlinCompile> {

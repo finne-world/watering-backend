@@ -22,3 +22,4 @@ const val awsJavaSdkSsm: String = "com.amazonaws:aws-java-sdk-ssm:${Versions.Dep
 const val aspectjweaver: String = "org.aspectj:aspectjweaver:${Versions.Dependency.ASPECTJ_WEAVER}"
 const val awsJavaSdkSqs: String = "com.amazonaws:aws-java-sdk-sqs:${Versions.Dependency.AWS_JAVA_SDK_SQS}"
 const val bootstrap: String = "org.webjars:bootstrap:${Versions.Dependency.BOOTSTRAP}"
+const val jquery: String = "org.webjars:jquery:${Versions.Dependency.JQUERY}"

@@ -2,14 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
   <title>会員登録 | Watering</title>
 
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}">
 </head>
 <body>
-<div class="container">
-  <h1 class="my-5">顧客登録</h1>
-  <form th:action="@{/front/users/create}" th:object="${userForm}" method="POST">
+<header th:replace="fragments/header :: header(signup)"></header>
+<div class="container w-50">
+  <h1 class="my-5">会員登録</h1>
+  <form th:action="@{/front/users/signup}" th:object="${userForm}" method="POST">
     <!-- マウスホバー テーブル幅を画面の50％に設定  -->
     <table class="table table-bordered table-hover col-6">
       <!-- フォームの部品はform-groupで囲う -->
@@ -18,7 +21,7 @@
         <th class="align-middle">ユーザー名</th>
         <!-- テキストボックスにform-controlで整形 text-dangerでエラー文字を赤色に設定 -->
         <td>
-          <input type="text" class="form-control" name="username" th:field="*{username}" th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'" />
+          <input type="text" class="form-control" name="username" th:field="*{username}" th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'" autofocus />
           <p th:value="${#fields.hasErrors('username')}"></p>
           <span class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
         </td>
@@ -31,9 +34,12 @@
         </td>
       </tr>
     </table>
-    <input type="submit" class="btn btn-primary mt-3" value="登録">
+    <div class="center-block text-center">
+      <button type="submit" class="btn btn-outline-primary btn-block w-50">新規登録</button>
+    </div>
   </form>
 </div>
 </body>
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}"></script>
 </html>
