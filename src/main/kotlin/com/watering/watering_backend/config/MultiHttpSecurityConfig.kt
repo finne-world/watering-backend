@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -14,10 +15,12 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 @EnableWebSecurity
-class MultiHttpSecurityConfig {
+class MultiHttpSecurityConfig: WebMvcConfigurer {
     @Order(1)
     @Configuration
     class ApiWebSecurityConfigurerAdapter(
@@ -50,10 +53,29 @@ class MultiHttpSecurityConfig {
     class ViewWebSecurityConfigurerAdapter: WebSecurityConfigurerAdapter() {
         override fun configure(http: HttpSecurity) {
             http.authorizeRequests()
-                .antMatchers("/front/users/create").permitAll()
-                .antMatchers("/**").hasRole(Authority.USER.name)
-                .antMatchers("/admin/**").hasRole(Authority.ADMIN.name)
-                .antMatchers("/").permitAll()
+                    .antMatchers(
+                        "/",
+                        "/front/users/signup",
+                    ).permitAll()
+                    .antMatchers("/**").hasRole(Authority.USER.name)
+                    .antMatchers("/admin/**").hasRole(Authority.ADMIN.name)
+                .and()
+                .formLogin()
+                    .loginPage("/front/users/signin")
+                    .loginProcessingUrl("/front/users/signin")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                    .defaultSuccessUrl("/front/users/profile")
+                    .failureUrl("/front/users/signin?failed=true")
+                    .permitAll()
         }
+
+        override fun configure(web: WebSecurity) {
+            web.ignoring().antMatchers("/webjars/**")
+        }
+    }
+
+    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/")
     }
 }

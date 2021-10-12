@@ -19,5 +19,6 @@ object Versions {
         const val ASPECTJ_WEAVER: String = "1.9.7"
         const val AWS_JAVA_SDK_SQS: String = "1.12.64"
         const val BOOTSTRAP: String = "5.1.0"
+        const val JQUERY: String = "3.6.0"
     }
 }

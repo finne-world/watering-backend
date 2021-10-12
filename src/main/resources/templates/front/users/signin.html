@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>サインイン | Watering</title>
+
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}">
+</head>
+<body>
+<header th:replace="fragments/header :: header(signin)"></header>
+<div class="container w-50">
+  <h1 class="my-5">サインイン</h1>
+  <form th:action="@{/front/users/signin}" th:object="${signinForm}" method="POST">
+    <!-- マウスホバー テーブル幅を画面の50％に設定  -->
+    <table class="table table-bordered table-hover col-6">
+      <!-- フォームの部品はform-groupで囲う -->
+      <tr class="form-group">
+        <!-- テキストを縦中央揃え -->
+        <th class="align-middle">ユーザー名</th>
+        <!-- テキストボックスにform-controlで整形 text-dangerでエラー文字を赤色に設定 -->
+        <td>
+          <label class="w-100">
+            <input type="text" class="form-control" name="username" th:field="*{username}" autofocus />
+          </label>
+        </td>
+      </tr>
+      <tr class="form-group">
+        <th class="align-middle">パスワード</th>
+        <td>
+          <label class="w-100">
+            <input type="text" class="form-control" name="password" th:field="*{password}" />
+          </label>
+        </td>
+      </tr>
+    </table>
+    <div th:if="${isFailed}" class="center-block text-center pb-3">
+      <span class="text-danger is-invalid">ユーザー名またはパスワードが正しくありません</span>
+    </div>
+    <div class="center-block text-center">
+      <button type="submit" class="btn btn-outline-primary btn-block w-50">サインイン</button>
+    </div>
+  </form>
+</div>
+</body>
+<script th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}"></script>
+</html>
