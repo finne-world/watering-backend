@@ -1,5 +1,6 @@
 package com.watering.watering_backend.config
 
+import com.watering.watering_backend.application.ApplicationUrl
 import com.watering.watering_backend.domain.constant.Authority
 import com.watering.watering_backend.domain.security.filter.ExceptionHandlerFilter
 import com.watering.watering_backend.domain.security.filter.JwtAuthenticationTokenFilter
@@ -55,18 +56,18 @@ class MultiHttpSecurityConfig: WebMvcConfigurer {
             http.authorizeRequests()
                     .antMatchers(
                         "/",
-                        "/users/signup",
+                        ApplicationUrl.GET_USER_SIGNUP.url,
                     ).permitAll()
                     .antMatchers("/**").hasRole(Authority.USER.name)
                     .antMatchers("/admin/**").hasRole(Authority.ADMIN.name)
                 .and()
                 .formLogin()
-                    .loginPage("/users/signin")
-                    .loginProcessingUrl("/users/signin")
+                    .loginPage(ApplicationUrl.GET_USER_SIGNIN.url)
+                    .loginProcessingUrl(ApplicationUrl.POST_USER_SIGNIN.url)
                     .usernameParameter("username")
                     .passwordParameter("password")
-                    .defaultSuccessUrl("/users/profile")
-                    .failureUrl("/users/signin?failed=true")
+                    .defaultSuccessUrl(ApplicationUrl.GET_USER_PROFILE.url)
+                    .failureUrl("${ApplicationUrl.GET_USER_SIGNIN.url}?failed=true")
                     .permitAll()
         }
 
