@@ -55,18 +55,18 @@ class MultiHttpSecurityConfig: WebMvcConfigurer {
             http.authorizeRequests()
                     .antMatchers(
                         "/",
-                        "/front/users/signup",
+                        "/users/signup",
                     ).permitAll()
                     .antMatchers("/**").hasRole(Authority.USER.name)
                     .antMatchers("/admin/**").hasRole(Authority.ADMIN.name)
                 .and()
                 .formLogin()
-                    .loginPage("/front/users/signin")
-                    .loginProcessingUrl("/front/users/signin")
+                    .loginPage("/users/signin")
+                    .loginProcessingUrl("/users/signin")
                     .usernameParameter("username")
                     .passwordParameter("password")
-                    .defaultSuccessUrl("/front/users/profile")
-                    .failureUrl("/front/users/signin?failed=true")
+                    .defaultSuccessUrl("/users/profile")
+                    .failureUrl("/users/signin?failed=true")
                     .permitAll()
         }
 

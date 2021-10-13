@@ -1,6 +1,6 @@
 package com.watering.watering_backend.application.controller.front
 
-import com.watering.watering_backend.domain.constant.TemplateMapping
+import com.watering.watering_backend.application.TemplateMapping
 import com.watering.watering_backend.domain.entity.form.SigninForm
 import com.watering.watering_backend.domain.entity.form.UserForm
 import com.watering.watering_backend.domain.service.UserService
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
-@RequestMapping("/front/users")
+@RequestMapping("/users")
 class UserFrontController(
     private val userService: UserService
 ) {
