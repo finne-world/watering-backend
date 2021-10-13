@@ -7,9 +7,12 @@
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}">
 </head>
 <body>
-<h1>会員登録が完了しました！</h1>
-<div>
-  <a th:href="@{/front/users/signin}" th:text="サインインはこちら"></a>
+<header th:replace="fragments/header :: header(null)"></header>
+<div class="container w-50">
+  <h1 class="my-5">会員登録が完了しました！</h1>
+  <div>
+    <a th:href="@{${urls.GET_USER_SIGNIN.url}}" th:text="サインインはこちら"></a>
+  </div>
 </div>
 </body>
 <script th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}"></script>

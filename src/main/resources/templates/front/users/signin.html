@@ -12,7 +12,7 @@
 <header th:replace="fragments/header :: header(signin)"></header>
 <div class="container w-50">
   <h1 class="my-5">サインイン</h1>
-  <form th:action="@{/front/users/signin}" th:object="${signinForm}" method="POST">
+  <form th:action="@{${urls.POST_USER_SIGNIN.url}}" th:object="${signinForm}" method="POST">
     <!-- マウスホバー テーブル幅を画面の50％に設定  -->
     <table class="table table-bordered table-hover col-6">
       <!-- フォームの部品はform-groupで囲う -->
