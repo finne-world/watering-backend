@@ -59,4 +59,9 @@ class UserFrontController(
         model.addAttribute("isFailed", failed)
         return TemplateMapping.USER_SIGNIN.value
     }
+
+    @GetMapping("profile")
+    fun getProfile(): String {
+        return TemplateMapping.USER_PROFILE.value
+    }
 }

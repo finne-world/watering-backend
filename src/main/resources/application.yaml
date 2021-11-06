@@ -8,7 +8,8 @@ spring:
   mvc:
     throw-exception-if-no-handler-found: true
   resources:
-    add-mappings: false
+    # 静的ファイルへのマッピングをONにするとExceptionHandlerで404を処理できなくなる
+    add-mappings: true
 
   jackson:
     property-naming-strategy: SNAKE_CASE

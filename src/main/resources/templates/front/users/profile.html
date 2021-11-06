@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>プロフィール | Watering</title>
+
+  <link rel="stylesheet" media="all" th:href="@{/css/style.css}">
+</head>
+<body>
+<header th:replace="fragments/header :: header(profile)"></header>
+<div class="container w-50">
+  <h1 class="my-5" th:text="|こんにちは。 ${user.username} さん。|"></h1>
+  <div th:unless="${user.isDiscordRegistered()}" class="login-with-discord-button-wrapper">
+    <div class="login-with-discord-button">
+      <a th:href="@{/oauth/authorize/discord}">
+        <div class="discord-image">
+          <img th:src="@{/img/users/profile/discord-icon.png}" />
+        </div>
+        <div class="discord-linked-text">
+          <p>Sign in with Discord</p>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div th:if="${user.isDiscordRegistered()}" class="discord-already-registered">
+    <p>登録済みです</p>
+  </div>
+</div>
+</body>
+</html>

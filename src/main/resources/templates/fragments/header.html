@@ -9,15 +9,23 @@
     </button>
 
     <div class="collapse navbar-collapse justify-content-end">
-      <ul class="navbar-nav me-5">
+      <ul th:unless="${user}" class="navbar-nav me-5">
         <li class="nav-item active">
-          <a th:href="@{/front/users/signup}" class="nav-link" th:classappend="${page == 'signup'} ? 'active'">サインアップ</a>
+          <a th:href="@{${urls.GET_USER_SIGNUP.url}}" class="nav-link" th:classappend="${page == 'signup'} ? 'active'">サインアップ</a>
         </li>
         <li class="nav-item">
-          <a th:href="@{/front/users/signin}" class="nav-link" th:classappend="${page == 'signin'} ? 'active'">サインイン</a>
+          <a th:href="@{${urls.GET_USER_SIGNIN.url}}" class="nav-link" th:classappend="${page == 'signin'} ? 'active'">サインイン</a>
         </li>
         <li class="nav-item">
           <a th:href="@{#}" class="nav-link" th:classappend="${page == ''} ? 'active'">Watering とは？</a>
+        </li>
+      </ul>
+      <ul th:if="${user}" class="navbar-nav me-5">
+        <li class="nav-item active">
+          <a th:href="@{${urls.GET_USER_PROFILE.url}}" class="nav-link" th:classappend="${page == 'profile'} ? 'active'">プロフィール</a>
+        </li>
+        <li class="nav-item">
+          <a th:href="@{#}" class="nav-link" th:classappend="${page == 'device'} ? 'active'">デバイス</a>
         </li>
       </ul>
     </div>

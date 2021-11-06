@@ -13,6 +13,12 @@ authentication:
   refresh-token:
     exp: 84600
 
+oauth:
+  discord:
+    authorize-url: https://discordapp.com/api/oauth2/authorize
+    client-id: 898505108327923762
+    redirect-uri: http://localhost:8080/oauth/discord/callback
+
 aws:
   parameter-store:
     jwt:

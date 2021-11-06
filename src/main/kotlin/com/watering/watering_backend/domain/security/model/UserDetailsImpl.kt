@@ -11,6 +11,10 @@ class UserDetailsImpl(
     private val password: String,
     private val authorities: List<AuthorityEntity>
 ): UserDetails {
+    fun getId(): Long {
+        return this.id
+    }
+
     override fun getUsername(): String {
         return this.username
     }

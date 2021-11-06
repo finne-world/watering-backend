@@ -10,4 +10,8 @@ class UserEntity(
     val discordId: Long? = null,
     createdAt: LocalDateTime,
     updatedAt: LocalDateTime
-): TableBasedEntity(createdAt, updatedAt)
+): TableBasedEntity(createdAt, updatedAt) {
+    fun isDiscordRegistered(): Boolean {
+        return this.discordId != null
+    }
+}

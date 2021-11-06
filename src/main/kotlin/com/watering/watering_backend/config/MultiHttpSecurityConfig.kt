@@ -72,11 +72,7 @@ class MultiHttpSecurityConfig: WebMvcConfigurer {
         }
 
         override fun configure(web: WebSecurity) {
-            web.ignoring().antMatchers("/webjars/**")
+            web.ignoring().antMatchers("/css/**", "/js/**")
         }
-    }
-
-    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/")
     }
 }
